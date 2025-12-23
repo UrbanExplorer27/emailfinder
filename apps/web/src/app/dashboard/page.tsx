@@ -34,6 +34,9 @@ export default function DashboardPage() {
           <Link href="/lead-lists" className={styles.navLink}>
             Lead Lists
           </Link>
+          <Link href="/account" className={styles.navLink}>
+            Account
+          </Link>
           <Link href="/signin" className={styles.navLink}>
             Sign out
           </Link>
