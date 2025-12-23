@@ -26,8 +26,8 @@ export default function SigninPage() {
           <p className={styles.kicker}>Welcome back</p>
           <h1>Sign in to continue</h1>
           <p className={styles.subhead}>
-            Enter your work email and password. We’ll wire this to Clerk for
-            authentication next.
+            Enter your work email and password to access your account and keep
+            searching verified contacts.
           </p>
 
           <form className={styles.form}>
@@ -66,15 +66,11 @@ export default function SigninPage() {
         </section>
 
         <section className={styles.sidePanel}>
-          <p className={styles.kicker}>Why teams sign in</p>
+          <p className={styles.kicker}>Why sign in</p>
           <ul className={styles.list}>
             <li>
               <strong>Verified lookups</strong> — Keep bounce rates low with
               checked addresses.
-            </li>
-            <li>
-              <strong>Usage visibility</strong> — Track searches across your
-              team.
             </li>
             <li>
               <strong>Exports</strong> — Save verified contacts for outreach tools.
@@ -82,8 +78,8 @@ export default function SigninPage() {
           </ul>
 
           <div className={styles.note}>
-            Coming soon: SSO + magic links via Clerk, plus rate limits tied to
-            Stripe plans.
+            Secure sign-in keeps your verified lookups, exports, and usage
+            tracking in sync.
           </div>
         </section>
       </main>

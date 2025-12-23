@@ -26,8 +26,8 @@ export default function SignupPage() {
           <p className={styles.kicker}>Get started free</p>
           <h1>Create your account</h1>
           <p className={styles.subhead}>
-            We’ll add Clerk + Stripe shortly. For now, use your work email to
-            preview the onboarding flow.
+            Use your work email to create an account and start finding verified
+            contacts.
           </p>
 
           <form className={styles.form}>
@@ -104,15 +104,11 @@ export default function SignupPage() {
               <strong>Domain accuracy</strong> — Uses both name + domain to avoid
               false positives.
             </li>
-            <li>
-              <strong>Team-ready</strong> — Role-based access and usage tracking
-              planned.
-            </li>
           </ul>
 
           <div className={styles.note}>
-            Next up: wire this form to Clerk for auth, plus Stripe for billing
-            and usage limits.
+            Manage your lookups, exports, and billing from one place once you’re
+            signed in.
           </div>
         </section>
       </main>
