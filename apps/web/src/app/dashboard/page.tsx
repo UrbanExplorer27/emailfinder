@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./dashboard.module.css";
+import { ActivityRow } from "./ActivityRow";
 
 export const metadata: Metadata = {
   title: "Dashboard | Email Finder",
@@ -29,6 +30,9 @@ export default function DashboardPage() {
         <nav className={styles.nav}>
           <Link href="/dashboard" className={styles.navLink}>
             Dashboard
+          </Link>
+          <Link href="/lead-lists" className={styles.navLink}>
+            Lead Lists
           </Link>
           <Link href="/signin" className={styles.navLink}>
             Sign out
@@ -109,13 +113,7 @@ export default function DashboardPage() {
             </div>
             <div className={styles.activityList}>
               {mockActivity.map((item) => (
-                <div key={item.result} className={styles.activityRow}>
-                  <div>
-                    <p className={styles.activityName}>{item.name}</p>
-                    <p className={styles.activityMeta}>{item.domain}</p>
-                  </div>
-                  <p className={styles.activityResult}>{item.result}</p>
-                </div>
+                <ActivityRow key={item.result} item={item} />
               ))}
             </div>
           </div>
