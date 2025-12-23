@@ -1,0 +1,19 @@
+{
+  "name": "emailfinder-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace web run dev",
+    "lint:web": "npm --workspace web run lint",
+    "build:web": "npm --workspace web run build",
+    "clean": "git clean -xfd"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
+
