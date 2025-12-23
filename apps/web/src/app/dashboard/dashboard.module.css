@@ -141,6 +141,27 @@
   gap: 14px;
 }
 
+.lookupPanel {
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  border-color: transparent;
+  color: #e2e8f0;
+  box-shadow: 0 16px 44px rgba(37, 99, 235, 0.25);
+}
+
+.lookupPanel h2 {
+  color: #ffffff;
+}
+
+.lookupPanel .kicker {
+  color: #e0e7ff;
+}
+
+.lookupHint {
+  color: #e0e7ff;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
 .panelHeader {
   display: flex;
   align-items: center;
@@ -177,6 +198,21 @@
   background: #f8fafc;
 }
 
+.lookupPanel .label {
+  color: #e2e8f0;
+}
+
+.lookupPanel .input {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #dbeafe;
+}
+
+.lookupPanel .input:focus {
+  outline: 2px solid rgba(226, 232, 240, 0.6);
+  border-color: #e2e8f0;
+}
+
 .input:focus {
   outline: 2px solid rgba(37, 99, 235, 0.25);
   border-color: #2563eb;
@@ -191,6 +227,22 @@
   color: #2563eb;
   font-weight: 700;
   cursor: pointer;
+}
+
+.lookupAction {
+  margin-top: 4px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #0b1957;
+  color: #ffffff;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.25);
+}
+
+.lookupAction:hover {
+  background: #0a164b;
 }
 
 .activityList {

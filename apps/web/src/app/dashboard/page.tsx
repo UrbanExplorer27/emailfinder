@@ -49,9 +49,9 @@ export default function DashboardPage() {
               Track remaining credits, recent verifications, and start a new search.
             </p>
           </div>
-          <button className={styles.primaryCta} type="button">
+          <Link className={styles.primaryCta} href="/find-email">
             Start new lookup
-          </button>
+          </Link>
         </section>
 
         <section className={styles.grid}>
@@ -67,11 +67,14 @@ export default function DashboardPage() {
         </section>
 
         <section className={styles.panelLayout}>
-          <div className={styles.panel}>
+          <div className={`${styles.panel} ${styles.lookupPanel}`}>
             <div className={styles.panelHeader}>
               <div>
                 <p className={styles.kicker}>Quick lookup</p>
                 <h2>Find an email</h2>
+                <p className={styles.lookupHint}>
+                  Enter a name and domain—we’ll return a single best-match email.
+                </p>
               </div>
             </div>
             <form className={styles.form}>
@@ -95,7 +98,7 @@ export default function DashboardPage() {
                   autoComplete="off"
                 />
               </label>
-              <button type="button" className={styles.secondaryCta}>
+              <button type="button" className={styles.lookupAction}>
                 Run lookup
               </button>
             </form>
