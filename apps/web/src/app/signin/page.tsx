@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./signin.module.css";
+import { SigninForm } from "./SigninForm";
 
 export const metadata: Metadata = {
   title: "Sign in | Email Finder",
@@ -30,35 +31,7 @@ export default function SigninPage() {
             searching verified contacts.
           </p>
 
-          <form className={styles.form}>
-            <label className={styles.label}>
-              <span>Work email</span>
-              <input
-                className={styles.input}
-                name="email"
-                type="email"
-                placeholder="you@company.com"
-                autoComplete="email"
-                required
-              />
-            </label>
-
-            <label className={styles.label}>
-              <span>Password</span>
-              <input
-                className={styles.input}
-                name="password"
-                type="password"
-                placeholder="Your password"
-                autoComplete="current-password"
-                required
-              />
-            </label>
-
-            <button type="button" className={styles.submitButton}>
-              Sign in
-            </button>
-          </form>
+          <SigninForm />
 
           <p className={styles.switch}>
             New here? <Link href="/signup">Create an account</Link>
