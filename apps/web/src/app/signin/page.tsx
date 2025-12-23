@@ -36,6 +36,9 @@ export default function SigninPage() {
           <p className={styles.switch}>
             New here? <Link href="/signup">Create an account</Link>
           </p>
+          <p className={styles.forgot}>
+            <Link href="/forgot-password">Forgot your password?</Link>
+          </p>
         </section>
 
         <section className={styles.sidePanel}>
