@@ -118,6 +118,13 @@
   margin-top: 4px;
 }
 
+.statHelper {
+  margin-top: 6px;
+  color: #475467;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 .panelLayout {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));

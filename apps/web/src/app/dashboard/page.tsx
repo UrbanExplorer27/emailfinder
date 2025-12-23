@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 
 const mockStats = [
   { label: "Remaining lookups", value: "240" },
-  { label: "Verified this week", value: "58" },
-  { label: "Bounce risk flagged", value: "3" },
+  { label: "Emails found this week", value: "58" },
 ];
 
 const mockActivity = [
@@ -56,6 +55,9 @@ export default function DashboardPage() {
             <div key={stat.label} className={styles.statCard}>
               <p className={styles.statLabel}>{stat.label}</p>
               <p className={styles.statValue}>{stat.value}</p>
+              {stat.label === "Remaining lookups" ? (
+                <p className={styles.statHelper}>Credits are only used when an email is found.</p>
+              ) : null}
             </div>
           ))}
         </section>
