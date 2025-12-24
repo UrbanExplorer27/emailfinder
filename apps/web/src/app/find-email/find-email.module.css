@@ -261,6 +261,19 @@
   color: #ffffff;
 }
 
+.lookupContainer[data-theme="inverted"] .resultCard {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.lookupContainer[data-theme="inverted"] .resultEmail {
+  color: #0f172a;
+}
+
+.lookupContainer[data-theme="inverted"] .resultMeta {
+  color: #475467;
+}
+
 .lookupContainer[data-theme="inverted"] .primaryCta {
   background: #ffffff;
   color: #0f172a;
