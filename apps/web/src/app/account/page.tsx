@@ -63,10 +63,52 @@ export default function AccountPage() {
             </div>
           </div>
 
-          <div className={styles.actions}>
-            <Link href="/forgot-password" className={styles.secondaryCta}>
-              Reset password
-            </Link>
+          <div className={styles.resetCard}>
+            <div>
+              <p className={styles.kicker}>Security</p>
+              <h2>Reset password</h2>
+              <p className={styles.subhead}>
+                Update your password without leaving the dashboard.
+              </p>
+            </div>
+            <form className={styles.resetForm}>
+              <label className={styles.resetLabel}>
+                <span>Current password</span>
+                <input
+                  className={styles.resetInput}
+                  name="currentPassword"
+                  type="password"
+                  placeholder="Current password"
+                  autoComplete="current-password"
+                  required
+                />
+              </label>
+              <label className={styles.resetLabel}>
+                <span>New password</span>
+                <input
+                  className={styles.resetInput}
+                  name="newPassword"
+                  type="password"
+                  placeholder="New password"
+                  autoComplete="new-password"
+                  required
+                />
+              </label>
+              <label className={styles.resetLabel}>
+                <span>Confirm new password</span>
+                <input
+                  className={styles.resetInput}
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Confirm new password"
+                  autoComplete="new-password"
+                  required
+                />
+              </label>
+              <button type="button" className={styles.secondaryCta}>
+                Save new password
+              </button>
+            </form>
           </div>
         </section>
       </main>
