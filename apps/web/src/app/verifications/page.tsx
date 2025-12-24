@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./verifications.module.css";
+import { VerificationsRow } from "./VerificationsRow";
 
 export const metadata: Metadata = {
   title: "Latest Verifications | Email Finder",
@@ -45,16 +46,7 @@ export default function VerificationsPage() {
 
         <section className={styles.list}>
           {mockVerifications.map((item) => (
-            <div key={item.email} className={styles.row}>
-              <div>
-                <p className={styles.name}>{item.name}</p>
-                <p className={styles.meta}>{item.domain}</p>
-              </div>
-              <div className={styles.right}>
-                <p className={styles.email}>{item.email}</p>
-                <span className={styles.status}>{item.status}</span>
-              </div>
-            </div>
+            <VerificationsRow key={item.email} item={item} />
           ))}
         </section>
       </main>
