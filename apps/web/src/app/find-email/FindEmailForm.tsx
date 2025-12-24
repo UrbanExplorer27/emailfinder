@@ -31,6 +31,11 @@ export function FindEmailForm({ compact }: Props) {
   const [domain, setDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
+  const [selectedList, setSelectedList] = useState("All results");
+  const listOptions = useMemo(
+    () => ["All results", "Prospects", "Customers", "Partners", "Sample"],
+    [],
+  );
 
   const isDisabled = useMemo(() => !fullName.trim() || !domain.trim() || isLoading, [fullName, domain, isLoading]);
 
@@ -95,7 +100,24 @@ export function FindEmailForm({ compact }: Props) {
                 Confidence: {result.confidence} · {result.note}
               </p>
             </div>
-            <span className={styles.status}>Found</span>
+            <div className={styles.resultActions}>
+              <span className={styles.status}>Found</span>
+              <label className={styles.listLabel}>
+                <span>Add to list</span>
+                <select
+                  className={styles.listSelect}
+                  value={selectedList}
+                  onChange={(e) => setSelectedList(e.target.value)}
+                >
+                  {listOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <span className={styles.listHelper}>Added to {selectedList}</span>
+              </label>
+            </div>
           </div>
         ) : (
           <div className={styles.placeholder}>

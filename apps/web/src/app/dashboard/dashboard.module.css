@@ -199,13 +199,24 @@
 }
 
 .lookupPanel .label {
-  color: #e2e8f0;
+  color: #ffffff;
 }
 
 .lookupPanel .input {
   background: #ffffff;
   color: #0f172a;
   border-color: #dbeafe;
+}
+
+.lookupPanel .placeholderTitle,
+.lookupPanel .placeholderBody,
+.lookupPanel .resultEmail,
+.lookupPanel .resultMeta {
+  color: #ffffff;
+}
+
+.lookupPanel .input::placeholder {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .lookupPanel .input:focus {
