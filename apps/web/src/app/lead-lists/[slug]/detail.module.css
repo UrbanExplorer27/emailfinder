@@ -111,6 +111,12 @@
   border-radius: 12px;
 }
 
+.leadActions {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+}
+
 .leadName {
   font-weight: 700;
 }
@@ -124,6 +130,20 @@
   color: #2563eb;
   font-weight: 700;
   word-break: break-all;
+}
+
+.removeButton {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #ef4444;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  background: #fee2e2;
 }
 
 .emptyState {

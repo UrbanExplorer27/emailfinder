@@ -115,7 +115,12 @@ export default function LeadListDetailPage({ params }: PageProps) {
                   <p className={styles.leadName}>{lead.name}</p>
                   <p className={styles.leadMeta}>{lead.domain}</p>
                 </div>
-                <p className={styles.leadEmail}>{lead.email}</p>
+                <div className={styles.leadActions}>
+                  <p className={styles.leadEmail}>{lead.email}</p>
+                  <button type="button" className={styles.removeButton}>
+                    Remove
+                  </button>
+                </div>
               </div>
             ))
           ) : (
