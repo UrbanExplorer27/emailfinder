@@ -297,6 +297,11 @@
   color: #0f172a;
 }
 
+.listHelper {
+  font-size: 12px;
+  color: #16a34a;
+}
+
 @media (max-width: 720px) {
   .hero {
     flex-direction: column;

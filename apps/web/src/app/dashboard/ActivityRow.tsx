@@ -14,9 +14,11 @@ const DEFAULT_LISTS = ["All results", "Prospects", "Customers", "Partners"];
 export function ActivityRow({ item }: { item: Activity }) {
   const [lists] = useState(DEFAULT_LISTS);
   const [selected, setSelected] = useState(lists[0]);
+  const [addedText, setAddedText] = useState("");
 
   const handleChange = (value: string) => {
     setSelected(value);
+    setAddedText(`Added to ${value}`);
   };
 
   return (
@@ -40,6 +42,7 @@ export function ActivityRow({ item }: { item: Activity }) {
               </option>
             ))}
           </select>
+          {addedText ? <span className={styles.listHelper}>{addedText}</span> : null}
         </label>
       </div>
     </div>

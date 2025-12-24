@@ -14,6 +14,7 @@ const LIST_OPTIONS = ["All results", "Prospects", "Customers", "Partners", "Samp
 
 export function VerificationsRow({ item }: { item: Verification }) {
   const [selected, setSelected] = useState(LIST_OPTIONS[0]);
+  const [addedText, setAddedText] = useState("");
 
   return (
     <div className={styles.row}>
@@ -29,7 +30,10 @@ export function VerificationsRow({ item }: { item: Verification }) {
           <select
             className={styles.listSelect}
             value={selected}
-            onChange={(e) => setSelected(e.target.value)}
+            onChange={(e) => {
+              setSelected(e.target.value);
+              setAddedText(`Added to ${e.target.value}`);
+            }}
           >
             {LIST_OPTIONS.map((option) => (
               <option key={option} value={option}>
@@ -37,6 +41,7 @@ export function VerificationsRow({ item }: { item: Verification }) {
               </option>
             ))}
           </select>
+          {addedText ? <span className={styles.listHelper}>{addedText}</span> : null}
         </label>
       </div>
     </div>
