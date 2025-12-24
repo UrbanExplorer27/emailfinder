@@ -113,7 +113,7 @@ export default function DashboardPage() {
                 <p className={styles.kicker}>Recent activity</p>
                 <h2>Latest verifications</h2>
               </div>
-              <Link href="#" className={styles.navLink}>
+              <Link href="/verifications" className={styles.navLink}>
                 View all
               </Link>
             </div>
