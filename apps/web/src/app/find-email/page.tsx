@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./find-email.module.css";
+import { FindEmailForm } from "./FindEmailForm";
 
 export const metadata: Metadata = {
   title: "Find an Email | Email Finder",
@@ -29,35 +30,7 @@ export default function FindEmailPage() {
             the best-match email.
           </p>
 
-          <form className={styles.form}>
-            <label className={styles.label}>
-              <span>Full name</span>
-              <input
-                className={styles.input}
-                name="fullName"
-                type="text"
-                placeholder="Jordan Lee"
-                autoComplete="off"
-                required
-              />
-            </label>
-
-            <label className={styles.label}>
-              <span>Company domain</span>
-              <input
-                className={styles.input}
-                name="domain"
-                type="text"
-                placeholder="company.com"
-                autoComplete="off"
-                required
-              />
-            </label>
-
-            <button type="button" className={styles.primaryCta}>
-              Run lookup
-            </button>
-          </form>
+          <FindEmailForm />
         </section>
       </main>
     </div>

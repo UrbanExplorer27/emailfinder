@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
+import { FindEmailForm } from "../find-email/FindEmailForm";
 
 export const metadata: Metadata = {
   title: "Dashboard | Email Finder",
@@ -80,31 +81,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <form className={styles.form}>
-              <label className={styles.label}>
-                <span>Full name</span>
-                <input
-                  className={styles.input}
-                  name="fullName"
-                  type="text"
-                  placeholder="Jordan Lee"
-                  autoComplete="off"
-                />
-              </label>
-              <label className={styles.label}>
-                <span>Company domain</span>
-                <input
-                  className={styles.input}
-                  name="domain"
-                  type="text"
-                  placeholder="company.com"
-                  autoComplete="off"
-                />
-              </label>
-              <button type="button" className={styles.lookupAction}>
-                Run lookup
-              </button>
-            </form>
+            <FindEmailForm compact />
           </div>
 
           <div className={styles.panel}>
