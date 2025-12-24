@@ -15,6 +15,15 @@ const mockLists = [
       { name: "Alex Rivera", email: "alex@northwind.io", domain: "northwind.io" },
       { name: "Priya Rao", email: "priya@formstack.dev", domain: "formstack.dev" },
       { name: "Samir Patel", email: "samir@canopy.ai", domain: "canopy.ai" },
+      { name: "Jordan Lee", email: "jordan@horizon.dev", domain: "horizon.dev" },
+      { name: "Casey Morgan", email: "casey@lumenlabs.io", domain: "lumenlabs.io" },
+      { name: "Avery Chen", email: "avery@productco.io", domain: "productco.io" },
+      { name: "Taylor Brooks", email: "taylor@revloop.com", domain: "revloop.com" },
+      { name: "Mina Flores", email: "mina@signalpath.ai", domain: "signalpath.ai" },
+      { name: "Noah Park", email: "noah@trailheadhq.com", domain: "trailheadhq.com" },
+      { name: "Liam Patel", email: "liam@vectorlane.com", domain: "vectorlane.com" },
+      { name: "Ivy Zhang", email: "ivy@mercator.dev", domain: "mercator.dev" },
+      { name: "Diego Ramos", email: "diego@fluxworks.io", domain: "fluxworks.io" },
     ],
   },
   {
@@ -23,6 +32,11 @@ const mockLists = [
     leads: [
       { name: "Jordan Lee", email: "jordan@horizon.dev", domain: "horizon.dev" },
       { name: "Casey Morgan", email: "casey@lumenlabs.io", domain: "lumenlabs.io" },
+      { name: "Mina Flores", email: "mina@signalpath.ai", domain: "signalpath.ai" },
+      { name: "Noah Park", email: "noah@trailheadhq.com", domain: "trailheadhq.com" },
+      { name: "Liam Patel", email: "liam@vectorlane.com", domain: "vectorlane.com" },
+      { name: "Ivy Zhang", email: "ivy@mercator.dev", domain: "mercator.dev" },
+      { name: "Diego Ramos", email: "diego@fluxworks.io", domain: "fluxworks.io" },
     ],
   },
   {
@@ -31,12 +45,27 @@ const mockLists = [
     leads: [
       { name: "Avery Chen", email: "avery@productco.io", domain: "productco.io" },
       { name: "Taylor Brooks", email: "taylor@revloop.com", domain: "revloop.com" },
+      { name: "Alex Rivera", email: "alex@northwind.io", domain: "northwind.io" },
     ],
   },
   {
     slug: "partners",
     name: "Partners",
-    leads: [{ name: "Sam Blake", email: "sam@integratehq.com", domain: "integratehq.com" }],
+    leads: [
+      { name: "Sam Blake", email: "sam@integratehq.com", domain: "integratehq.com" },
+      { name: "Priya Rao", email: "priya@formstack.dev", domain: "formstack.dev" },
+    ],
+  },
+  {
+    slug: "sample",
+    name: "Sample",
+    leads: [
+      { name: "Chris Stone", email: "chris@sampleco.com", domain: "sampleco.com" },
+      { name: "Jamie Li", email: "jamie@demo.io", domain: "demo.io" },
+      { name: "Morgan Diaz", email: "morgan@betaworks.dev", domain: "betaworks.dev" },
+      { name: "Riley Shaw", email: "riley@testlabs.ai", domain: "testlabs.ai" },
+      { name: "Quinn Harper", email: "quinn@usecase.app", domain: "usecase.app" },
+    ],
   },
 ];
 
@@ -45,7 +74,10 @@ type PageProps = {
 };
 
 export default function LeadListDetailPage({ params }: PageProps) {
-  const list = mockLists.find((l) => l.slug === params.slug);
+  const normalizedSlug = decodeURIComponent(params.slug || "").toLowerCase();
+  const list =
+    mockLists.find((l) => l.slug.toLowerCase() === normalizedSlug) ??
+    mockLists.find((l) => l.slug === "sample");
 
   return (
     <div className={styles.page}>

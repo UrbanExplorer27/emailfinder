@@ -8,10 +8,11 @@ export const metadata: Metadata = {
 };
 
 const mockLists = [
-  { name: "All results", count: 312, slug: "all-results" },
-  { name: "Prospects", count: 128, slug: "prospects" },
-  { name: "Customers", count: 44, slug: "customers" },
-  { name: "Partners", count: 18, slug: "partners" },
+  { name: "All results", count: 12, slug: "all-results" },
+  { name: "Prospects", count: 7, slug: "prospects" },
+  { name: "Customers", count: 3, slug: "customers" },
+  { name: "Partners", count: 2, slug: "partners" },
+  { name: "Sample", count: 5, slug: "sample" },
 ];
 
 export default function LeadListsPage() {

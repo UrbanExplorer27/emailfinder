@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import styles from "./dashboard.module.css";
 
 type Activity = {
@@ -12,25 +12,10 @@ type Activity = {
 const DEFAULT_LISTS = ["All results", "Prospects", "Customers", "Partners"];
 
 export function ActivityRow({ item }: { item: Activity }) {
-  const [lists, setLists] = useState(DEFAULT_LISTS);
+  const [lists] = useState(DEFAULT_LISTS);
   const [selected, setSelected] = useState(lists[0]);
 
-  const options = useMemo(
-    () => [...lists, "Create new list…"],
-    [lists],
-  );
-
   const handleChange = (value: string) => {
-    if (value === "Create new list…") {
-      const name = window.prompt("Name your new list");
-      if (name && !lists.includes(name)) {
-        setLists((prev) => [...prev, name]);
-        setSelected(name);
-      } else if (name) {
-        setSelected(name);
-      }
-      return;
-    }
     setSelected(value);
   };
 
@@ -49,7 +34,7 @@ export function ActivityRow({ item }: { item: Activity }) {
             value={selected}
             onChange={(e) => handleChange(e.target.value)}
           >
-            {options.map((option) => (
+            {lists.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
