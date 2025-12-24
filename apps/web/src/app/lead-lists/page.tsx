@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 };
 
 const mockLists = [
-  { name: "All results", count: 312 },
-  { name: "Prospects", count: 128 },
-  { name: "Customers", count: 44 },
-  { name: "Partners", count: 18 },
+  { name: "All results", count: 312, slug: "all-results" },
+  { name: "Prospects", count: 128, slug: "prospects" },
+  { name: "Customers", count: 44, slug: "customers" },
+  { name: "Partners", count: 18, slug: "partners" },
 ];
 
 export default function LeadListsPage() {
@@ -50,9 +50,9 @@ export default function LeadListsPage() {
                 <p className={styles.listCount}>{list.count} contacts</p>
               </div>
               <div className={styles.actions}>
-                <button type="button" className={styles.secondaryCta}>
+                <Link href={`/lead-lists/${list.slug}`} className={styles.secondaryCta}>
                   View
-                </button>
+                </Link>
                 <button type="button" className={styles.ghostCta}>
                   Export CSV
                 </button>
