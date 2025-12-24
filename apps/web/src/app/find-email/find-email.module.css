@@ -123,6 +123,20 @@
   gap: 12px;
 }
 
+.lookupContainer[data-theme="inverted"] .label {
+  color: #ffffff;
+}
+
+.lookupContainer[data-theme="inverted"] .input {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.lookupContainer[data-theme="inverted"] .input::placeholder {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .resultArea {
   border: 1px dashed #cbd5e1;
   border-radius: 12px;
@@ -133,6 +147,11 @@
 .resultArea[data-compact="true"] {
   background: rgba(255, 255, 255, 0.8);
   border-color: rgba(226, 232, 240, 0.7);
+}
+
+.lookupContainer[data-theme="inverted"] .resultArea {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .loadingCard,
@@ -233,6 +252,19 @@
 .placeholderBody {
   color: #475467;
   margin-top: 4px;
+}
+
+.lookupContainer[data-theme="inverted"] .placeholderTitle,
+.lookupContainer[data-theme="inverted"] .placeholderBody,
+.lookupContainer[data-theme="inverted"] .resultEmail,
+.lookupContainer[data-theme="inverted"] .resultMeta {
+  color: #ffffff;
+}
+
+.lookupContainer[data-theme="inverted"] .primaryCta {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 @keyframes spin {

@@ -81,7 +81,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <FindEmailForm compact />
+            <FindEmailForm compact variant="inverted" />
           </div>
 
           <div className={styles.panel}>

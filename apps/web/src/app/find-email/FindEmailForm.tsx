@@ -5,6 +5,7 @@ import styles from "./find-email.module.css";
 
 type Props = {
   compact?: boolean;
+  variant?: "default" | "inverted";
 };
 
 type Result = {
@@ -26,7 +27,7 @@ const buildMockResult = (fullName: string, domain: string): Result => {
   };
 };
 
-export function FindEmailForm({ compact }: Props) {
+export function FindEmailForm({ compact, variant = "default" }: Props) {
   const [fullName, setFullName] = useState("");
   const [domain, setDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +52,7 @@ export function FindEmailForm({ compact }: Props) {
   };
 
   return (
-    <div className={styles.lookupContainer}>
+    <div className={styles.lookupContainer} data-theme={variant}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
           <span>Full name</span>
