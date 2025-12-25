@@ -18,6 +18,8 @@ export default function LeadListDetailPage({ params }: PageProps) {
   const [list, setList] = useState<LeadList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [removingId, setRemovingId] = useState<string | null>(null);
+  const [removeError, setRemoveError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -82,20 +84,54 @@ export default function LeadListDetailPage({ params }: PageProps) {
               <p className={styles.emptyBody}>Fetching leads for this list.</p>
             </div>
           ) : list && list.items.length > 0 ? (
-            list.items.map((lead) => (
-              <div key={lead.id} className={styles.leadRow}>
-                <div>
-                  <p className={styles.leadName}>{lead.name ?? "Unknown"}</p>
-                  <p className={styles.leadMeta}>{lead.domain}</p>
+            <>
+              {removeError ? <p className={styles.actionError}>{removeError}</p> : null}
+              {list.items.map((lead) => (
+                <div key={lead.id} className={styles.leadRow}>
+                  <div>
+                    <p className={styles.leadName}>{lead.name ?? "Unknown"}</p>
+                    <p className={styles.leadMeta}>{lead.domain}</p>
+                  </div>
+                  <div className={styles.leadActions}>
+                    <p className={styles.leadEmail}>{lead.email}</p>
+                    <button
+                      type="button"
+                      className={styles.removeButton}
+                      onClick={async () => {
+                        if (!list) return;
+                        setRemoveError(null);
+                        setRemovingId(lead.id);
+                        try {
+                          const res = await fetch(`/api/lead-lists/${list.id}/items?itemId=${lead.id}`, {
+                            method: "DELETE",
+                          });
+                          if (!res.ok) {
+                            const text = await res.text();
+                            throw new Error(text || "Failed to remove");
+                          }
+                          setList((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  items: prev.items.filter((i) => i.id !== lead.id),
+                                }
+                              : prev,
+                          );
+                        } catch (err) {
+                          const message = err instanceof Error ? err.message : "Failed to remove lead";
+                          setRemoveError(message);
+                        } finally {
+                          setRemovingId(null);
+                        }
+                      }}
+                      disabled={removingId === lead.id}
+                    >
+                      {removingId === lead.id ? "Removing…" : "Remove"}
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.leadActions}>
-                  <p className={styles.leadEmail}>{lead.email}</p>
-                  <button type="button" className={styles.removeButton}>
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))
+              ))}
+            </>
           ) : (
             <div className={styles.emptyState}>
               <p className={styles.emptyTitle}>No leads yet</p>
