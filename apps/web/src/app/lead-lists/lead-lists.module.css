@@ -88,6 +88,32 @@
   cursor: pointer;
 }
 
+.createForm {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.createInput {
+  flex: 1;
+  border: 1px solid #d7deed;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 15px;
+  color: #0f172a;
+  background: #fff;
+}
+
+.createInput:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.2);
+  border-color: #2563eb;
+}
+
 .listGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -140,6 +166,11 @@
   cursor: pointer;
 }
 
+.error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
 @media (max-width: 720px) {
   .hero {
     flex-direction: column;
@@ -149,6 +180,12 @@
   .listCard {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .createForm {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
