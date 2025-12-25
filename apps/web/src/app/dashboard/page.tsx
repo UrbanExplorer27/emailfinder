@@ -127,14 +127,7 @@ export default function DashboardPage() {
             <Link className={styles.primaryCta} href="/find-email">
               Start new lookup
             </Link>
-            <Link
-              className={`${styles.secondaryCta} ${isTrial ? styles.secondaryCtaDisabled : ""}`}
-              href={isTrial ? "#" : "/mass-lookup"}
-              aria-disabled={isTrial}
-              onClick={(e) => {
-                if (isTrial) e.preventDefault();
-              }}
-            >
+            <Link className={styles.secondaryCta} href="/mass-lookup">
               Start mass lookup
             </Link>
           </div>
