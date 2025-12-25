@@ -6,7 +6,14 @@
     let companyName = "";
     let domain = "";
     let companyUrl = "";
-    const companyLink = document.querySelector("a[href*='linkedin.com/company']");
+    const experienceCompanyLink =
+      document.querySelector('section[data-section="experience"] a[href*="linkedin.com/company"]') ||
+      document.querySelector('section[id*="experience"] a[href*="linkedin.com/company"]') ||
+      document.querySelector(".experience-section a[href*='linkedin.com/company']");
+
+    const fallbackCompanyLink = document.querySelector("a[href*='linkedin.com/company']");
+    const companyLink = experienceCompanyLink || fallbackCompanyLink;
+
     if (companyLink) {
       companyName = companyLink.textContent?.trim() || "";
       const href = companyLink.getAttribute("href") || "";
