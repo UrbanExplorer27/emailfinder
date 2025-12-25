@@ -14,6 +14,7 @@ const listSelect = qs("#list-select");
 const listStatus = qs("#list-status");
 const findBtn = qs("#find-btn");
 const refreshBtn = qs("#refresh-btn");
+const signinBtn = qs("#signin-btn");
 
 let listsLoaded = false;
 
@@ -45,6 +46,16 @@ const getProfileData = () =>
       });
     });
   });
+
+const checkSession = async (apiBase) => {
+  if (!apiBase) return false;
+  try {
+    const res = await fetch(`${apiBase}/api/me`, { credentials: "include" });
+    return res.ok;
+  } catch (_e) {
+    return false;
+  }
+};
 
 const fetchLists = async (apiBase) => {
   const res = await fetch(`${apiBase}/api/lead-lists`, { credentials: "include" });
@@ -169,6 +180,11 @@ const init = async () => {
   const apiBase = await loadApiBase();
   apiBaseInput.value = apiBase;
 
+  const isAuthed = await checkSession(apiBase);
+  if (!isAuthed) {
+    setStatus("Not signed in. Please sign in first.");
+  }
+
   const profile = await getProfileData();
   if (profile?.name) nameInput.value = profile.name;
   if (profile?.domain) domainInput.value = profile.domain;
@@ -180,6 +196,15 @@ const init = async () => {
     const refreshed = await getProfileData();
     if (refreshed?.name) nameInput.value = refreshed.name;
     if (refreshed?.domain) domainInput.value = refreshed.domain;
+  });
+  signinBtn.addEventListener("click", async () => {
+    const apiBase = apiBaseInput.value.trim().replace(/\/$/, "");
+    if (!apiBase) {
+      setStatus("Set API base URL before signing in.");
+      return;
+    }
+    await saveApiBase(apiBase);
+    chrome.tabs.create({ url: `${apiBase}/signin` });
   });
 };
 
