@@ -45,8 +45,8 @@ export default function DashboardPage() {
           <Link href="/lead-lists" className={styles.navLink}>
             Lead Lists
           </Link>
-          <Link href="/account" className={styles.navLink}>
-            Account
+          <Link href="/subscription" className={styles.navLink}>
+            Subscription
           </Link>
           <UserButton afterSignOutUrl="/signin" />
         </nav>
