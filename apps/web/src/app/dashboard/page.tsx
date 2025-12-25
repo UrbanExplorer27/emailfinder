@@ -1,16 +1,10 @@
  "use client";
  
-import type { Metadata } from "next";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
-
-export const metadata: Metadata = {
-  title: "Dashboard | Email Finder",
-  description: "View lookups, limits, and recent activity for your email finder account.",
-};
 
 const mockStats = [
   { label: "Remaining lookups", value: "240" },
