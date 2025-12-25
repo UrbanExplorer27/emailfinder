@@ -132,9 +132,6 @@ export default function DashboardPage() {
               <p className={styles.kicker}>Usage</p>
               <h2 className={styles.statTitle}>Credits & plan</h2>
             </div>
-            <Link href="/subscription" className={styles.statCta}>
-              Get more credits
-            </Link>
           </div>
           <div className={styles.grid}>
             {[
@@ -147,6 +144,11 @@ export default function DashboardPage() {
                     ? "Loading…"
                     : "—",
                 helper: "Credits are only used when an email is found.",
+                cta: (
+                  <Link href="/subscription" className={styles.statCtaInCard}>
+                    Get more credits
+                  </Link>
+                ),
               },
               {
                 label: "Plan",
@@ -158,6 +160,7 @@ export default function DashboardPage() {
                 <p className={styles.statLabel}>{stat.label}</p>
                 <p className={styles.statValue}>{stat.value}</p>
                 {stat.helper ? <p className={styles.statHelper}>{stat.helper}</p> : null}
+                {"cta" in stat && stat.cta ? <div className={styles.statCtaWrap}>{stat.cta}</div> : null}
               </div>
             ))}
           </div>
