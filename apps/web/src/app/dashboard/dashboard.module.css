@@ -128,10 +128,10 @@
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
   color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 24px rgba(124, 58, 237, 0.25);
 }
 
 .statLabel {
