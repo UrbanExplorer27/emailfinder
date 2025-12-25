@@ -39,51 +39,31 @@ const getProfileData = () =>
 
 const scrapeCompanyDomain = async (companyUrl) => {
   if (!companyUrl) return "";
-  return new Promise((resolve) => {
-    const targetUrl = companyUrl.includes("/about") ? companyUrl : `${companyUrl.replace(/\/$/, "")}/about`;
-    chrome.tabs.create({ url: targetUrl, active: false }, (tab) => {
-      if (!tab?.id) return resolve("");
-      const tabId = tab.id;
-      const timeout = setTimeout(() => {
-        chrome.tabs.remove(tabId);
-        resolve("");
-      }, 12000);
-      chrome.tabs.onUpdated.addListener(function listener(updatedTabId, info) {
-        if (updatedTabId === tabId && info.status === "complete") {
-          chrome.tabs.onUpdated.removeListener(listener);
-          chrome.scripting.executeScript(
-            {
-              target: { tabId },
-              func: () => {
-                const candidates = Array.from(
-                  document.querySelectorAll('a[href^="http"], a[data-tracking-control-name*="website"]')
-                );
-                const visit = candidates.find((el) => {
-                  const text = (el.textContent || "").toLowerCase();
-                  return text.includes("visit website") || text.includes("website");
-                });
-                const link = visit || candidates[0];
-                const href = link?.getAttribute("href") || "";
-                try {
-                  const url = new URL(href);
-                  return url.hostname.replace(/^www\./, "");
-                } catch {
-                  return "";
-                }
-              },
-            },
-            (results) => {
-              clearTimeout(timeout);
-              chrome.tabs.remove(tabId);
-              if (chrome.runtime.lastError) return resolve("");
-              const domain = results?.[0]?.result || "";
-              resolve(domain);
-            }
-          );
-        }
-      });
+  const targetUrl = companyUrl.includes("/about") ? companyUrl : `${companyUrl.replace(/\/$/, "")}/about`;
+  try {
+    const resp = await fetch(targetUrl, { credentials: "include" });
+    if (!resp.ok) return "";
+    const html = await resp.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const candidates = Array.from(
+      doc.querySelectorAll('a[href^="http"], a[data-tracking-control-name*="website"]')
+    );
+    const visit = candidates.find((el) => {
+      const text = (el.textContent || "").toLowerCase();
+      return text.includes("visit website") || text.includes("website");
     });
-  });
+    const link = visit || candidates[0];
+    const href = link?.getAttribute("href") || "";
+    if (!href) return "";
+    try {
+      const url = new URL(href);
+      return url.hostname.replace(/^www\./, "");
+    } catch {
+      return "";
+    }
+  } catch (_e) {
+    return "";
+  }
 };
 
 const getApiBase = async () => {
