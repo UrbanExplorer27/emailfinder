@@ -53,7 +53,9 @@ export function VerificationsRow({ item }: { item: Verification }) {
         <div className={styles.metaRow}>
           <span className={styles.domainPill}>{item.domain}</span>
           {item.createdAt ? <span className={styles.timeMeta}>{new Date(item.createdAt).toLocaleString()}</span> : null}
-          {item.confidence ? <span className={styles.confidenceMeta}>Confidence: {item.confidence}</span> : null}
+          {item.confidence && item.confidence !== "—" ? (
+            <span className={styles.confidenceMeta}>Confidence: {item.confidence}</span>
+          ) : null}
         </div>
       </div>
       <div className={styles.right}>

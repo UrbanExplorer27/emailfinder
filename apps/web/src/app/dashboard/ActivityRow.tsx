@@ -80,7 +80,9 @@ export function ActivityRow({ item }: { item: Activity }) {
         <div className={styles.activityMetaRow}>
           <span className={styles.domainPill}>{item.domain}</span>
           {item.createdAt ? <span className={styles.timeMeta}>{new Date(item.createdAt).toLocaleString()}</span> : null}
-          {item.confidence ? <span className={styles.confidenceMeta}>Confidence: {item.confidence}</span> : null}
+          {item.confidence && item.confidence !== "—" ? (
+            <span className={styles.confidenceMeta}>Confidence: {item.confidence}</span>
+          ) : null}
         </div>
       </div>
       <div className={styles.activityActions}>
