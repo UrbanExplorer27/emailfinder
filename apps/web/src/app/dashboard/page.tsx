@@ -29,6 +29,8 @@ export default function DashboardPage() {
     }
   }, [isLoaded, isSignedIn, router]);
 
+  const isTrial = (plan ?? "").toLowerCase().includes("trial");
+
   const loadCredits = useCallback(async () => {
     if (!isSignedIn) return;
     setIsCreditsLoading(true);
@@ -121,9 +123,21 @@ export default function DashboardPage() {
               Track remaining credits, recent verifications, and start a new search.
             </p>
           </div>
-          <Link className={styles.primaryCta} href="/find-email">
-            Start new lookup
-          </Link>
+          <div className={styles.heroActions}>
+            <Link className={styles.primaryCta} href="/find-email">
+              Start new lookup
+            </Link>
+            <Link
+              className={`${styles.secondaryCta} ${isTrial ? styles.secondaryCtaDisabled : ""}`}
+              href={isTrial ? "#" : "/mass-lookup"}
+              aria-disabled={isTrial}
+              onClick={(e) => {
+                if (isTrial) e.preventDefault();
+              }}
+            >
+              Start mass lookup
+            </Link>
+          </div>
         </section>
 
         <section>
