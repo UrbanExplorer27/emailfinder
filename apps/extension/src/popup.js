@@ -30,9 +30,9 @@ const getProfileData = () =>
   new Promise((resolve) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
-      if (!tab?.id) return resolve({ name: "", domain: "" });
+      if (!tab?.id) return resolve({ name: "", domain: "", companyName: "" });
       chrome.tabs.sendMessage(tab.id, { type: "getProfileData" }, (resp) => {
-        resolve(resp || { name: "", domain: "" });
+        resolve(resp || { name: "", domain: "", companyName: "" });
       });
     });
   });
@@ -174,6 +174,9 @@ const init = async () => {
   const profile = await getProfileData();
   if (profile?.name) nameInput.value = profile.name;
   if (profile?.domain) domainInput.value = profile.domain;
+  if (!profile?.domain && profile?.companyName) {
+    setStatus("Company domain not detected—please enter it.");
+  }
 
   findBtn.addEventListener("click", onFind);
   copyBtn.addEventListener("click", () => copyToClipboard(resultEmailEl.textContent || ""));
