@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     const email = firstCandidate?.email ?? null;
     const confidenceValue = firstCandidate?.confidence ?? null;
     const resultCode = firstCandidate?.result ?? null;
-    const status = resultCode ?? (email ? "found" : "not_found");
+    const status = resultCode === "ok" ? "found" : "not_found";
 
     const result: FindContactResponse = {
       email,

@@ -81,12 +81,18 @@ export function FindEmailForm({ compact, variant = "default", onLookupSuccess }:
       const foundEmail = data.email ?? null;
       const resultCode: string | null = data.result ?? data.status ?? null;
       const isEmailDisabled = resultCode === "email_disabled";
+      const isInvalidMx = resultCode === "invalid_mx";
+      const isFound = resultCode === "ok" && !!foundEmail;
 
-      if (isEmailDisabled) {
+      if (isEmailDisabled || isInvalidMx || !isFound) {
         setResult({
           email: "No result",
           confidence: "—",
-          note: "Email disabled for this contact.",
+          note: isEmailDisabled
+            ? "Email disabled for this contact."
+            : isInvalidMx
+              ? "Domain has invalid MX records."
+              : "No email found for this name/domain.",
           status: "not_found",
           resultCode,
         });
