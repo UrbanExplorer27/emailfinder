@@ -1,14 +1,8 @@
-import "use client";
+"use client";
 
-import type { Metadata } from "next";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./lead-lists.module.css";
-
-export const metadata: Metadata = {
-  title: "Lead Lists | Email Finder",
-  description: "Manage your lead lists, view saved results, and export to CSV.",
-};
 
 export const dynamic = "force-dynamic";
 
