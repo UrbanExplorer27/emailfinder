@@ -1,7 +1,17 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({
-  publicRoutes: ["/signin(.*)", "/signup(.*)", "/forgot-password", "/"],
+const isPublicRoute = createRouteMatcher([
+  "/signin(.*)",
+  "/signup(.*)",
+  "/forgot-password",
+  "/",
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  const { userId, redirectToSignIn } = await auth();
+  if (!userId && !isPublicRoute(req)) {
+    return redirectToSignIn({ returnBackUrl: req.url });
+  }
 });
 
 export const config = {

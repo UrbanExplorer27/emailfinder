@@ -1,11 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const { userId } = auth();
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+  const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -22,7 +23,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   }
 
   const list = await prisma.leadList.findFirst({
-    where: { id: params.id, userId: user.id },
+    where: { id, userId: user.id },
   });
   if (!list) {
     return NextResponse.json({ error: "List not found" }, { status: 404 });
@@ -40,8 +41,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ item });
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const { userId } = auth();
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+  const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -58,7 +60,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   const item = await prisma.leadListItem.findFirst({
-    where: { id: itemId, leadList: { userId: user.id, id: params.id } },
+    where: { id: itemId, leadList: { userId: user.id, id } },
     include: { leadList: true },
   });
 

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { userId, sessionId } = auth();
+  const { userId, sessionId } = await auth();
   if (!userId || !sessionId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
