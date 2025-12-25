@@ -3,14 +3,28 @@
   "name": "Email Finder (Workspace Scaffold)",
   "version": "0.0.1",
   "description": "Chrome extension scaffold for Email Finder. (Build pipeline TBD.)",
-  "permissions": [],
+  "permissions": ["storage", "scripting", "tabs"],
   "host_permissions": [
-    "https://www.linkedin.com/*"
+    "https://www.linkedin.com/*",
+    "https://*/*"
   ],
   "action": {
     "default_title": "Email Finder",
     "default_popup": "popup.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.js"],
+      "matches": ["https://*/*"]
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

@@ -4,8 +4,8 @@
   "private": true,
   "description": "Chrome extension for Email Finder (LinkedIn context lookup).",
   "scripts": {
-    "build": "echo \"TODO: add build pipeline (e.g., Vite/webpack)\"",
-    "lint": "echo \"TODO: add lint\""
+    "build": "echo \"Static assets only (no build step yet)\"",
+    "lint": "echo \"No lint configured\""
   },
   "license": "UNLICENSED"
 }
