@@ -90,6 +90,16 @@
   cursor: pointer;
 }
 
+.secondaryCta {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #2563eb;
+  background: #ffffff;
+  color: #2563eb;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .infoGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -120,6 +130,19 @@
   color: #475467;
   font-size: 13px;
   line-height: 1.4;
+}
+
+.upgradeActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.error {
+  margin-top: 12px;
+  color: #b91c1c;
+  font-weight: 600;
 }
 
 @media (max-width: 720px) {
