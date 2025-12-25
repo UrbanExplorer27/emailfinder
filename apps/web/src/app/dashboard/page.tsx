@@ -2,16 +2,11 @@
  
 import Link from "next/link";
 import { useUser, UserButton } from "@clerk/nextjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
-
-const mockStats = [
-  { label: "Remaining lookups", value: "240" },
-  { label: "Emails found this week", value: "58" },
-];
 
 const mockActivity = [
   { name: "Alex Rivera", domain: "northwind.io", result: "alex@northwind.io" },
@@ -24,12 +19,41 @@ export const dynamic = "force-dynamic";
 export default function DashboardPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const [credits, setCredits] = useState<number | null>(null);
+  const [plan, setPlan] = useState<string | null>(null);
+  const [isCreditsLoading, setIsCreditsLoading] = useState(false);
+  const [creditsError, setCreditsError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.replace("/signin");
     }
   }, [isLoaded, isSignedIn, router]);
+
+  useEffect(() => {
+    const load = async () => {
+      if (!isSignedIn) return;
+      setIsCreditsLoading(true);
+      setCreditsError(null);
+      try {
+        // Ensure user row exists
+        await fetch("/api/me", { cache: "no-store" });
+        const res = await fetch("/api/credits", { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error(`Failed to load credits (${res.status})`);
+        }
+        const data = await res.json();
+        setCredits(typeof data.credits === "number" ? data.credits : null);
+        setPlan(data.planName ?? data.plan ?? null);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to load credits";
+        setCreditsError(message);
+      } finally {
+        setIsCreditsLoading(false);
+      }
+    };
+    load();
+  }, [isSignedIn]);
 
   return (
     <div className={styles.page}>
@@ -67,13 +91,27 @@ export default function DashboardPage() {
         </section>
 
         <section className={styles.grid}>
-          {mockStats.map((stat) => (
+          {[
+            {
+              label: "Remaining lookups",
+              value:
+                credits !== null
+                  ? credits.toLocaleString()
+                  : isCreditsLoading
+                  ? "Loading…"
+                  : "—",
+              helper: "Credits are only used when an email is found.",
+            },
+            {
+              label: "Plan",
+              value: plan ?? (isCreditsLoading ? "Loading…" : "—"),
+              helper: creditsError ?? undefined,
+            },
+          ].map((stat) => (
             <div key={stat.label} className={styles.statCard}>
               <p className={styles.statLabel}>{stat.label}</p>
               <p className={styles.statValue}>{stat.value}</p>
-              {stat.label === "Remaining lookups" ? (
-                <p className={styles.statHelper}>Credits are only used when an email is found.</p>
-              ) : null}
+              {stat.helper ? <p className={styles.statHelper}>{stat.helper}</p> : null}
             </div>
           ))}
         </section>
