@@ -79,7 +79,7 @@ export default function DashboardPage() {
           createdAt: l.createdAt ?? null,
           confidence: l.confidence ?? null,
         }));
-        setActivity(mapped.slice(0, 5));
+        setActivity(mapped.slice(0, 2));
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to load activity";
         setActivityError(message);

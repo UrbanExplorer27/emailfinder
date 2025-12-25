@@ -37,7 +37,7 @@ export default function VerificationsPage() {
           createdAt: l.createdAt ?? null,
           confidence: l.confidence ?? null,
         }));
-        setItems(mapped);
+        setItems(mapped.slice(0, 2));
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to load verifications";
         setError(message);
