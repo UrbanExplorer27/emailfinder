@@ -20,6 +20,8 @@ const mockActivity = [
   { name: "Samir Patel", domain: "canopy.ai", result: "samir@canopy.ai" },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default function DashboardPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
