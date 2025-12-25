@@ -1,7 +1,7 @@
  "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./subscription.module.css";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,10 @@ export default function SubscriptionPage() {
   const [isStarterLoading, setIsStarterLoading] = useState(false);
   const [isProLoading, setIsProLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | null>(null);
+  const [plan, setPlan] = useState<string | null>(null);
+  const [creditsError, setCreditsError] = useState<string | null>(null);
+  const [isCreditsLoading, setIsCreditsLoading] = useState(false);
 
   const startCheckout = async (plan: "starter" | "pro") => {
     setError(null);
@@ -39,6 +43,32 @@ export default function SubscriptionPage() {
     }
   };
 
+  useEffect(() => {
+    const loadCredits = async () => {
+      setIsCreditsLoading(true);
+      setCreditsError(null);
+      try {
+        await fetch("/api/me", { cache: "no-store" });
+        const res = await fetch("/api/credits", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load credits (${res.status})`);
+        const data = await res.json();
+        setCredits(typeof data.credits === "number" ? data.credits : null);
+        setPlan(data.planName ?? data.plan ?? null);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to load credits";
+        setCreditsError(message);
+      } finally {
+        setIsCreditsLoading(false);
+      }
+    };
+    void loadCredits();
+  }, []);
+
+  const displayPlan = plan ?? (isCreditsLoading ? "Loading…" : "Free Trial");
+  const isTrial = displayPlan.toLowerCase().includes("trial");
+  const creditsValue =
+    credits !== null ? credits.toLocaleString() : isCreditsLoading ? "Loading…" : creditsError ? "—" : "—";
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -58,7 +88,9 @@ export default function SubscriptionPage() {
               <p className={styles.kicker}>Subscription</p>
               <h1>Billing & plan</h1>
               <p className={styles.subhead}>
-                You’re on the free trial. Upgrade to unlock more credits and manage billing.
+                {isTrial
+                  ? "You’re on the free trial. Upgrade to unlock more credits and manage billing."
+                  : "Manage your plan, credits, and billing portal access."}
               </p>
             </div>
             <a className={styles.primaryCta} href="/api/stripe/portal">
@@ -69,8 +101,10 @@ export default function SubscriptionPage() {
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
               <p className={styles.label}>Plan</p>
-              <p className={styles.value}>Free Trial</p>
-              <p className={styles.helper}>5 free credits to try the product.</p>
+              <p className={styles.value}>{displayPlan}</p>
+              <p className={styles.helper}>
+                {creditsError ? creditsError : isTrial ? "5 free credits to try the product." : "Active subscription."}
+              </p>
             </div>
             <div className={styles.infoItem}>
               <p className={styles.label}>Upgrade</p>
@@ -101,7 +135,7 @@ export default function SubscriptionPage() {
             </div>
             <div className={styles.infoItem}>
               <p className={styles.label}>Credits</p>
-              <p className={styles.value}>5 remaining</p>
+              <p className={styles.value}>{creditsValue} remaining</p>
               <p className={styles.helper}>Credits are only used when an email is found.</p>
             </div>
           </div>
