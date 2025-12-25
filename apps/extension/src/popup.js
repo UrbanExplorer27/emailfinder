@@ -40,13 +40,14 @@ const getProfileData = () =>
 const scrapeCompanyDomain = async (companyUrl) => {
   if (!companyUrl) return "";
   return new Promise((resolve) => {
-    chrome.tabs.create({ url: companyUrl, active: false }, (tab) => {
+    const targetUrl = companyUrl.includes("/about") ? companyUrl : `${companyUrl.replace(/\/$/, "")}/about`;
+    chrome.tabs.create({ url: targetUrl, active: false }, (tab) => {
       if (!tab?.id) return resolve("");
       const tabId = tab.id;
       const timeout = setTimeout(() => {
         chrome.tabs.remove(tabId);
         resolve("");
-      }, 8000);
+      }, 12000);
       chrome.tabs.onUpdated.addListener(function listener(updatedTabId, info) {
         if (updatedTabId === tabId && info.status === "complete") {
           chrome.tabs.onUpdated.removeListener(listener);
@@ -54,7 +55,14 @@ const scrapeCompanyDomain = async (companyUrl) => {
             {
               target: { tabId },
               func: () => {
-                const link = document.querySelector('a[data-tracking-control-name*="website"], a[href^="http"]');
+                const candidates = Array.from(
+                  document.querySelectorAll('a[href^="http"], a[data-tracking-control-name*="website"]')
+                );
+                const visit = candidates.find((el) => {
+                  const text = (el.textContent || "").toLowerCase();
+                  return text.includes("visit website") || text.includes("website");
+                });
+                const link = visit || candidates[0];
                 const href = link?.getAttribute("href") || "";
                 try {
                   const url = new URL(href);
