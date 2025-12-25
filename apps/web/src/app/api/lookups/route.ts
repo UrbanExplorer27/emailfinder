@@ -62,7 +62,7 @@ export async function GET() {
   }
 
   const lookups = await prisma.lookup.findMany({
-    where: { userId: user.id },
+    where: { userId: user.id, status: "FOUND", NOT: { resultEmail: null } },
     orderBy: { createdAt: "desc" },
     take: 25,
   });
