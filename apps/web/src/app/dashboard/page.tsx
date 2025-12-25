@@ -126,30 +126,41 @@ export default function DashboardPage() {
           </Link>
         </section>
 
-        <section className={styles.grid}>
-          {[
-            {
-              label: "Remaining lookups",
-              value:
-                credits !== null
-                  ? credits.toLocaleString()
-                  : isCreditsLoading
-                  ? "Loading…"
-                  : "—",
-              helper: "Credits are only used when an email is found.",
-            },
-            {
-              label: "Plan",
-              value: plan ?? (isCreditsLoading ? "Loading…" : "—"),
-              helper: creditsError ?? undefined,
-            },
-          ].map((stat) => (
-            <div key={stat.label} className={styles.statCard}>
-              <p className={styles.statLabel}>{stat.label}</p>
-              <p className={styles.statValue}>{stat.value}</p>
-              {stat.helper ? <p className={styles.statHelper}>{stat.helper}</p> : null}
+        <section>
+          <div className={styles.statHeader}>
+            <div>
+              <p className={styles.kicker}>Usage</p>
+              <h2 className={styles.statTitle}>Credits & plan</h2>
             </div>
-          ))}
+            <Link href="/subscription" className={styles.statCta}>
+              Get more credits
+            </Link>
+          </div>
+          <div className={styles.grid}>
+            {[
+              {
+                label: "Remaining lookups",
+                value:
+                  credits !== null
+                    ? credits.toLocaleString()
+                    : isCreditsLoading
+                    ? "Loading…"
+                    : "—",
+                helper: "Credits are only used when an email is found.",
+              },
+              {
+                label: "Plan",
+                value: plan ?? (isCreditsLoading ? "Loading…" : "—"),
+                helper: creditsError ?? undefined,
+              },
+            ].map((stat) => (
+              <div key={stat.label} className={styles.statCard}>
+                <p className={styles.statLabel}>{stat.label}</p>
+                <p className={styles.statValue}>{stat.value}</p>
+                {stat.helper ? <p className={styles.statHelper}>{stat.helper}</p> : null}
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className={styles.panelLayout}>

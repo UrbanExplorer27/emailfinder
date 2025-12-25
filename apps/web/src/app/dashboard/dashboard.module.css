@@ -99,6 +99,28 @@
   gap: 16px;
 }
 
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.statTitle {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.statCta {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #2563eb;
+  background: #ffffff;
+  color: #2563eb;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+}
+
 .statCard {
   background: #ffffff;
   border: 1px solid #e2e8f0;
