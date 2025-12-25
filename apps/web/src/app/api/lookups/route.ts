@@ -50,3 +50,33 @@ export async function POST(req: Request) {
   return NextResponse.json({ lookupId: lookup.id, status: lookup.status });
 }
 
+export async function GET() {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({ where: { clerkUserId: userId } });
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  const lookups = await prisma.lookup.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+    take: 25,
+  });
+
+  return NextResponse.json({
+    lookups: lookups.map((l) => ({
+      id: l.id,
+      fullName: l.fullName,
+      domain: l.domain,
+      email: l.resultEmail,
+      status: l.status,
+      confidence: l.confidence,
+      createdAt: l.createdAt,
+    })),
+  });
+}
+

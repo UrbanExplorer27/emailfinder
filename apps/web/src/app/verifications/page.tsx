@@ -1,25 +1,50 @@
-import type { Metadata } from "next";
+ "use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styles from "./verifications.module.css";
 import { VerificationsRow } from "./VerificationsRow";
 
-export const metadata: Metadata = {
-  title: "Latest Verifications | Email Finder",
-  description: "See all recent email lookups and their results.",
-};
-
 export const dynamic = "force-dynamic";
 
-const mockVerifications = [
-  { name: "Alex Rivera", email: "alex@northwind.io", domain: "northwind.io", status: "Found" },
-  { name: "Priya Rao", email: "priya@formstack.dev", domain: "formstack.dev", status: "Found" },
-  { name: "Samir Patel", email: "samir@canopy.ai", domain: "canopy.ai", status: "Found" },
-  { name: "Jordan Lee", email: "jordan@horizon.dev", domain: "horizon.dev", status: "Found" },
-  { name: "Casey Morgan", email: "casey@lumenlabs.io", domain: "lumenlabs.io", status: "Found" },
-  { name: "Mina Flores", email: "mina@signalpath.ai", domain: "signalpath.ai", status: "Found" },
-];
+type Verification = {
+  name: string;
+  email: string;
+  domain: string;
+  status: string;
+};
 
 export default function VerificationsPage() {
+  const [items, setItems] = useState<Verification[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/lookups", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load lookups (${res.status})`);
+        const data = await res.json();
+        const mapped: Verification[] = (data.lookups ?? []).map((l: any) => ({
+          name: l.fullName ?? "Unknown",
+          email: l.email ?? "No result",
+          domain: l.domain ?? "",
+          status: l.status ?? "Unknown",
+        }));
+        setItems(mapped);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to load verifications";
+        setError(message);
+        setItems([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    void load();
+  }, []);
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -47,9 +72,24 @@ export default function VerificationsPage() {
         </section>
 
         <section className={styles.list}>
-          {mockVerifications.map((item) => (
-            <VerificationsRow key={item.email} item={item} />
-          ))}
+          {error ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyTitle}>Error</p>
+              <p className={styles.emptyBody}>{error}</p>
+            </div>
+          ) : isLoading ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyTitle}>Loading…</p>
+              <p className={styles.emptyBody}>Fetching latest verifications.</p>
+            </div>
+          ) : items.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyTitle}>No verifications yet</p>
+              <p className={styles.emptyBody}>Run a lookup to see results here.</p>
+            </div>
+          ) : (
+            items.map((item) => <VerificationsRow key={`${item.email}-${item.domain}`} item={item} />)
+          )}
         </section>
       </main>
     </div>
