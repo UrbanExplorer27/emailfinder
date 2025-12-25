@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Email Finder (Workspace Scaffold)",
+  "version": "0.0.1",
+  "description": "Chrome extension scaffold for Email Finder. (Build pipeline TBD.)",
+  "permissions": [],
+  "host_permissions": [
+    "https://www.linkedin.com/*"
+  ],
+  "action": {
+    "default_title": "Email Finder",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
+

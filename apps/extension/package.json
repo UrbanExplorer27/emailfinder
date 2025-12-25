@@ -1,0 +1,12 @@
+{
+  "name": "emailfinder-extension",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Chrome extension for Email Finder (LinkedIn context lookup).",
+  "scripts": {
+    "build": "echo \"TODO: add build pipeline (e.g., Vite/webpack)\"",
+    "lint": "echo \"TODO: add lint\""
+  },
+  "license": "UNLICENSED"
+}
+
