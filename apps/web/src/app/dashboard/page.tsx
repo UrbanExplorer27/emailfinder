@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SignOutButton } from "@clerk/nextjs";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
@@ -38,9 +39,11 @@ export default function DashboardPage() {
           <Link href="/account" className={styles.navLink}>
             Account
           </Link>
-          <Link href="/signin" className={styles.navLink}>
-            Sign out
-          </Link>
+          <SignOutButton redirectUrl="/signin">
+            <button type="button" className={styles.navLink}>
+              Sign out
+            </button>
+          </SignOutButton>
         </nav>
       </header>
 
