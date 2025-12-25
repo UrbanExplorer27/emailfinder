@@ -25,6 +25,17 @@ export default function SigninPage() {
             signUpUrl="/signup"
             afterSignInUrl="/dashboard"
             routing="hash"
+            appearance={{
+              elements: {
+                formButtonPrimary: "bg-[#2563eb] hover:bg-[#1e4fc7] text-white",
+                card: "shadow-lg rounded-2xl",
+              },
+              variables: {
+                colorPrimary: "#2563eb",
+                borderRadius: "12px",
+                fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
+              },
+            }}
           />
         </section>
       </main>

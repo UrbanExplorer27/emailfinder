@@ -1,8 +1,7 @@
  "use client";
  
 import Link from "next/link";
-import { SignOutButton } from "@clerk/nextjs";
-import { useUser } from "@clerk/nextjs";
+import { useUser, UserButton } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./dashboard.module.css";
@@ -49,11 +48,7 @@ export default function DashboardPage() {
           <Link href="/account" className={styles.navLink}>
             Account
           </Link>
-          <SignOutButton redirectUrl="/signin">
-            <button type="button" className={styles.navLink}>
-              Sign out
-            </button>
-          </SignOutButton>
+          <UserButton afterSignOutUrl="/signin" />
         </nav>
       </header>
 

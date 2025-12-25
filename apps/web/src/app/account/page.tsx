@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Manage your account, billing, and subscription details.",
 };
 
+export const dynamic = "force-dynamic";
+
 const mockAccount = {
   email: "you@company.com",
   plan: "Pro Monthly",

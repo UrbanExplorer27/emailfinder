@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Look up a professional email by name and domain.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function FindEmailPage() {
   return (
     <div className={styles.page}>

@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "See all recent email lookups and their results.",
 };
 
+export const dynamic = "force-dynamic";
+
 const mockVerifications = [
   { name: "Alex Rivera", email: "alex@northwind.io", domain: "northwind.io", status: "Found" },
   { name: "Priya Rao", email: "priya@formstack.dev", domain: "formstack.dev", status: "Found" },

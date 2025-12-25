@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Manage your lead lists, view saved results, and export to CSV.",
 };
 
+export const dynamic = "force-dynamic";
+
 const mockLists = [
   { name: "All results", count: 0, slug: "all-results" },
   { name: "Prospects", count: 0, slug: "prospects" },
