@@ -1,5 +1,8 @@
+import "use client";
+
 import type { Metadata } from "next";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styles from "./detail.module.css";
 
 export const metadata: Metadata = {
@@ -9,49 +12,36 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const mockLists = [
-  {
-    slug: "all-results",
-    name: "All results",
-    leads: [],
-  },
-  {
-    slug: "prospects",
-    name: "Prospects",
-    leads: [],
-  },
-  {
-    slug: "customers",
-    name: "Customers",
-    leads: [],
-  },
-  {
-    slug: "partners",
-    name: "Partners",
-    leads: [],
-  },
-  {
-    slug: "sample",
-    name: "Sample",
-    leads: [
-      { name: "Chris Stone", email: "chris@sampleco.com", domain: "sampleco.com" },
-      { name: "Jamie Li", email: "jamie@demo.io", domain: "demo.io" },
-      { name: "Morgan Diaz", email: "morgan@betaworks.dev", domain: "betaworks.dev" },
-      { name: "Riley Shaw", email: "riley@testlabs.ai", domain: "testlabs.ai" },
-      { name: "Quinn Harper", email: "quinn@usecase.app", domain: "usecase.app" },
-    ],
-  },
-];
+type LeadItem = { id: string; name: string | null; email: string; domain: string };
+type LeadList = { id: string; name: string; items: LeadItem[] };
 
 type PageProps = {
   params: { slug: string };
 };
 
 export default function LeadListDetailPage({ params }: PageProps) {
-  const normalizedSlug = decodeURIComponent(params.slug || "").toLowerCase();
-  const list =
-    mockLists.find((l) => l.slug.toLowerCase() === normalizedSlug) ??
-    mockLists.find((l) => l.slug === "sample");
+  const [list, setList] = useState<LeadList | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(`/api/lead-lists/${params.slug}`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load list (${res.status})`);
+        const data = await res.json();
+        setList(data.list ?? null);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to load list";
+        setError(message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    void load();
+  }, [params.slug]);
 
   return (
     <div className={styles.page}>
@@ -69,9 +59,13 @@ export default function LeadListDetailPage({ params }: PageProps) {
         <section className={styles.hero}>
           <div>
             <p className={styles.kicker}>Lead list</p>
-            <h1>{list?.name ?? "Lead list"}</h1>
+            <h1>{isLoading ? "Loading..." : list?.name ?? "Lead list"}</h1>
             <p className={styles.subhead}>
-              {list ? `${list.leads.length} saved leads` : "No leads yet for this list."}
+              {isLoading
+                ? "Loading..."
+                : list
+                  ? `${list.items.length} saved leads`
+                  : error ?? "No leads yet for this list."}
             </p>
           </div>
           <div className={styles.heroActions}>
@@ -82,11 +76,21 @@ export default function LeadListDetailPage({ params }: PageProps) {
         </section>
 
         <section className={styles.leads}>
-          {list && list.leads.length > 0 ? (
-            list.leads.map((lead) => (
-              <div key={lead.email} className={styles.leadRow}>
+          {error ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyTitle}>Error</p>
+              <p className={styles.emptyBody}>{error}</p>
+            </div>
+          ) : isLoading ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyTitle}>Loading...</p>
+              <p className={styles.emptyBody}>Fetching leads for this list.</p>
+            </div>
+          ) : list && list.items.length > 0 ? (
+            list.items.map((lead) => (
+              <div key={lead.id} className={styles.leadRow}>
                 <div>
-                  <p className={styles.leadName}>{lead.name}</p>
+                  <p className={styles.leadName}>{lead.name ?? "Unknown"}</p>
                   <p className={styles.leadMeta}>{lead.domain}</p>
                 </div>
                 <div className={styles.leadActions}>
