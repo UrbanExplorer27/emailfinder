@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styles from "./detail.module.css";
 
 export const dynamic = "force-dynamic";
@@ -10,10 +10,11 @@ type LeadItem = { id: string; name: string | null; email: string; domain: string
 type LeadList = { id: string; name: string; items: LeadItem[] };
 
 type PageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default function LeadListDetailPage({ params }: PageProps) {
+  const { slug } = use(params);
   const [list, setList] = useState<LeadList | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +24,7 @@ export default function LeadListDetailPage({ params }: PageProps) {
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/lead-lists/${params.slug}`, { cache: "no-store" });
+        const res = await fetch(`/api/lead-lists/${slug}`, { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to load list (${res.status})`);
         const data = await res.json();
         setList(data.list ?? null);
@@ -35,7 +36,7 @@ export default function LeadListDetailPage({ params }: PageProps) {
       }
     };
     void load();
-  }, [params.slug]);
+  }, [slug]);
 
   return (
     <div className={styles.page}>

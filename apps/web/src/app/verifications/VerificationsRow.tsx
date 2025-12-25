@@ -10,14 +10,14 @@ type Verification = {
   status: string;
 };
 
-const LIST_OPTIONS = ["All results", "Prospects", "Customers", "Partners", "Sample"];
-
 export function VerificationsRow({ item }: { item: Verification }) {
-  const [options, setOptions] = useState(LIST_OPTIONS);
-  const [selected, setSelected] = useState(LIST_OPTIONS[0]);
+  const [options, setOptions] = useState<{ id: string; name: string }[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
   const [addedText, setAddedText] = useState("");
   const [listsError, setListsError] = useState<string | null>(null);
   const [listsLoading, setListsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadLists = async () => {
@@ -27,15 +27,16 @@ export function VerificationsRow({ item }: { item: Verification }) {
         const res = await fetch("/api/lead-lists", { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to load lists (${res.status})`);
         const data = await res.json();
-        const names: string[] = (data.lists ?? []).map((l: { name: string }) => l.name);
-        const merged = names.length > 0 ? names : LIST_OPTIONS;
-        setOptions(merged);
-        setSelected(merged[0]);
+        const lists: { id: string; name: string }[] = (data.lists ?? []).map(
+          (l: { id: string; name: string }) => ({ id: l.id, name: l.name })
+        );
+        setOptions(lists);
+        setSelected(lists[0]?.id ?? null);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to load lists";
         setListsError(message);
-        setOptions(LIST_OPTIONS);
-        setSelected(LIST_OPTIONS[0]);
+        setOptions([]);
+        setSelected(null);
       } finally {
         setListsLoading(false);
       }
@@ -56,20 +57,44 @@ export function VerificationsRow({ item }: { item: Verification }) {
           <span>Add to list</span>
           <select
             className={styles.listSelect}
-            value={selected}
+            value={selected ?? ""}
             onChange={(e) => {
               setSelected(e.target.value);
-              setAddedText(`Added to ${e.target.value}`);
+              setAddError(null);
+              setAddedText("");
+              const list = options.find((o) => o.id === e.target.value);
+              if (!list) return;
+              setIsSaving(true);
+              fetch(`/api/lead-lists/${list.id}/items`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  name: item.name,
+                  email: item.email,
+                  domain: item.domain,
+                }),
+              })
+                .then((res) => {
+                  if (!res.ok) throw new Error(`Failed to add to ${list.name} (${res.status})`);
+                  setAddedText(`Added to ${list.name}`);
+                })
+                .catch((err) => {
+                  const message = err instanceof Error ? err.message : "Failed to add to list";
+                  setAddError(message);
+                })
+                .finally(() => setIsSaving(false));
             }}
+            disabled={isSaving}
           >
             {options.map((option) => (
-              <option key={option} value={option}>
-                {option}
+              <option key={option.id} value={option.id}>
+                {option.name}
               </option>
             ))}
           </select>
           {listsLoading ? <span className={styles.listHelper}>Loading lists…</span> : null}
           {listsError ? <span className={styles.listHelper}>{listsError}</span> : null}
+          {addError ? <span className={styles.listHelper}>{addError}</span> : null}
           {addedText ? <span className={styles.listHelper}>{addedText}</span> : null}
         </label>
       </div>
