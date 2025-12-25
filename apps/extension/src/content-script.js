@@ -5,10 +5,12 @@
 
     let companyName = "";
     let domain = "";
+    let companyUrl = "";
     const companyLink = document.querySelector("a[href*='linkedin.com/company']");
     if (companyLink) {
       companyName = companyLink.textContent?.trim() || "";
       const href = companyLink.getAttribute("href") || "";
+      if (href) companyUrl = href;
       const slugMatch = href.match(/linkedin\.com\/company\/([^\/?#]+)/i);
       const slug = slugMatch?.[1] || "";
       if (slug) {
@@ -19,7 +21,7 @@
       }
     }
 
-    return { name, domain, companyName };
+    return { name, domain, companyName, companyUrl };
   };
 
   chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {

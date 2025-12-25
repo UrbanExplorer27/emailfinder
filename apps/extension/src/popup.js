@@ -30,12 +30,53 @@ const getProfileData = () =>
   new Promise((resolve) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
-      if (!tab?.id) return resolve({ name: "", domain: "", companyName: "" });
+      if (!tab?.id) return resolve({ name: "", domain: "", companyName: "", companyUrl: "" });
       chrome.tabs.sendMessage(tab.id, { type: "getProfileData" }, (resp) => {
-        resolve(resp || { name: "", domain: "", companyName: "" });
+        resolve(resp || { name: "", domain: "", companyName: "", companyUrl: "" });
       });
     });
   });
+
+const scrapeCompanyDomain = async (companyUrl) => {
+  if (!companyUrl) return "";
+  return new Promise((resolve) => {
+    chrome.tabs.create({ url: companyUrl, active: false }, (tab) => {
+      if (!tab?.id) return resolve("");
+      const tabId = tab.id;
+      const timeout = setTimeout(() => {
+        chrome.tabs.remove(tabId);
+        resolve("");
+      }, 8000);
+      chrome.tabs.onUpdated.addListener(function listener(updatedTabId, info) {
+        if (updatedTabId === tabId && info.status === "complete") {
+          chrome.tabs.onUpdated.removeListener(listener);
+          chrome.scripting.executeScript(
+            {
+              target: { tabId },
+              func: () => {
+                const link = document.querySelector('a[data-tracking-control-name*="website"], a[href^="http"]');
+                const href = link?.getAttribute("href") || "";
+                try {
+                  const url = new URL(href);
+                  return url.hostname.replace(/^www\./, "");
+                } catch {
+                  return "";
+                }
+              },
+            },
+            (results) => {
+              clearTimeout(timeout);
+              chrome.tabs.remove(tabId);
+              if (chrome.runtime.lastError) return resolve("");
+              const domain = results?.[0]?.result || "";
+              resolve(domain);
+            }
+          );
+        }
+      });
+    });
+  });
+};
 
 const getApiBase = async () => {
   return DEFAULT_API_BASE;
@@ -173,8 +214,18 @@ const init = async () => {
 
   const profile = await getProfileData();
   if (profile?.name) nameInput.value = profile.name;
-  if (profile?.domain) domainInput.value = profile.domain;
-  if (!profile?.domain && profile?.companyName) {
+  if (profile?.domain) {
+    domainInput.value = profile.domain;
+  } else if (profile?.companyUrl) {
+    setStatus("Fetching company website…");
+    const scrapedDomain = await scrapeCompanyDomain(profile.companyUrl);
+    if (scrapedDomain) {
+      domainInput.value = scrapedDomain;
+      setStatus("Company domain detected.");
+    } else {
+      setStatus("Company domain not detected—please enter it.");
+    }
+  } else if (profile?.companyName) {
     setStatus("Company domain not detected—please enter it.");
   }
 
