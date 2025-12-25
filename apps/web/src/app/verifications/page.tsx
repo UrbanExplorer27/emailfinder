@@ -12,6 +12,8 @@ type Verification = {
   email: string;
   domain: string;
   status: string;
+  createdAt?: string;
+  confidence?: string | null;
 };
 
 export default function VerificationsPage() {
@@ -32,6 +34,8 @@ export default function VerificationsPage() {
           email: l.email ?? "No result",
           domain: l.domain ?? "",
           status: l.status ?? "Unknown",
+          createdAt: l.createdAt ?? null,
+          confidence: l.confidence ?? null,
         }));
         setItems(mapped);
       } catch (err) {

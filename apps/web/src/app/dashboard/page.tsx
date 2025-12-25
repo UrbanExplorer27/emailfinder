@@ -17,7 +17,9 @@ export default function DashboardPage() {
   const [plan, setPlan] = useState<string | null>(null);
   const [isCreditsLoading, setIsCreditsLoading] = useState(false);
   const [creditsError, setCreditsError] = useState<string | null>(null);
-  const [activity, setActivity] = useState<{ name: string; domain: string; result: string }[]>([]);
+  const [activity, setActivity] = useState<
+    { name: string; domain: string; result: string; status?: string; createdAt?: string; confidence?: string | null }[]
+  >([]);
   const [activityError, setActivityError] = useState<string | null>(null);
   const [activityLoading, setActivityLoading] = useState(false);
 
@@ -62,10 +64,20 @@ export default function DashboardPage() {
         const res = await fetch("/api/lookups", { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to load lookups (${res.status})`);
         const data = await res.json();
-        const mapped: { name: string; domain: string; result: string }[] = (data.lookups ?? []).map((l: any) => ({
+        const mapped: {
+          name: string;
+          domain: string;
+          result: string;
+          status?: string;
+          createdAt?: string;
+          confidence?: string | null;
+        }[] = (data.lookups ?? []).map((l: any) => ({
           name: l.fullName ?? "Unknown",
           domain: l.domain ?? "",
           result: l.email ?? l.resultEmail ?? "No result",
+          status: l.status ?? "Unknown",
+          createdAt: l.createdAt ?? null,
+          confidence: l.confidence ?? null,
         }));
         setActivity(mapped.slice(0, 5));
       } catch (err) {

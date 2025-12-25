@@ -8,6 +8,8 @@ type Verification = {
   email: string;
   domain: string;
   status: string;
+  createdAt?: string;
+  confidence?: string | null;
 };
 
 export function VerificationsRow({ item }: { item: Verification }) {
@@ -48,11 +50,17 @@ export function VerificationsRow({ item }: { item: Verification }) {
     <div className={styles.row}>
       <div>
         <p className={styles.name}>{item.name}</p>
-        <p className={styles.meta}>{item.domain}</p>
+        <div className={styles.metaRow}>
+          <span className={styles.domainPill}>{item.domain}</span>
+          {item.createdAt ? <span className={styles.timeMeta}>{new Date(item.createdAt).toLocaleString()}</span> : null}
+          {item.confidence ? <span className={styles.confidenceMeta}>Confidence: {item.confidence}</span> : null}
+        </div>
       </div>
       <div className={styles.right}>
         <p className={styles.email}>{item.email}</p>
-        <span className={styles.status}>{item.status}</span>
+        <span className={styles.status} data-state={(item.status ?? "").toLowerCase()}>
+          {item.status}
+        </span>
         <label className={styles.listLabel}>
           <span>Add to list</span>
           <select
