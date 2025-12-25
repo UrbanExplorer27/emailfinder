@@ -1,6 +1,6 @@
 const qs = (sel) => document.querySelector(sel);
+const DEFAULT_API_BASE = "https://emailfinderproj.vercel.app";
 
-const apiBaseInput = qs("#api-base");
 const nameInput = qs("#full-name");
 const domainInput = qs("#domain");
 const statusEl = qs("#status");
@@ -26,16 +26,6 @@ const setListStatus = (text) => {
   listStatus.textContent = text || "";
 };
 
-const loadApiBase = () =>
-  new Promise((resolve) => {
-    chrome.storage.sync.get(["apiBase"], (data) => resolve(data.apiBase || ""));
-  });
-
-const saveApiBase = (value) =>
-  new Promise((resolve) => {
-    chrome.storage.sync.set({ apiBase: value }, () => resolve());
-  });
-
 const getProfileData = () =>
   new Promise((resolve) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -46,6 +36,10 @@ const getProfileData = () =>
       });
     });
   });
+
+const getApiBase = async () => {
+  return DEFAULT_API_BASE;
+};
 
 const checkSession = async (apiBase) => {
   if (!apiBase) return false;
@@ -91,12 +85,7 @@ const copyToClipboard = async (text) => {
 };
 
 const onFind = async () => {
-  const apiBase = apiBaseInput.value.trim().replace(/\/$/, "");
-  if (!apiBase) {
-    setStatus("Set API base URL.");
-    return;
-  }
-  await saveApiBase(apiBase);
+  const apiBase = await getApiBase();
 
   const fullName = nameInput.value.trim();
   const domain = domainInput.value.trim();
@@ -144,8 +133,7 @@ const onFind = async () => {
 };
 
 const onSave = async () => {
-  const apiBase = apiBaseInput.value.trim().replace(/\/$/, "");
-  if (!apiBase) return setListStatus("Set API base URL.");
+  const apiBase = await getApiBase();
   const email = resultEmailEl.textContent || "";
   if (!email || email === "No result" || email === "Lookup failed") {
     setListStatus("No email to save.");
@@ -177,9 +165,7 @@ const onSave = async () => {
 };
 
 const init = async () => {
-  const apiBase = await loadApiBase();
-  apiBaseInput.value = apiBase;
-
+  const apiBase = await getApiBase();
   const isAuthed = await checkSession(apiBase);
   if (!isAuthed) {
     setStatus("Not signed in. Please sign in first.");
@@ -198,12 +184,7 @@ const init = async () => {
     if (refreshed?.domain) domainInput.value = refreshed.domain;
   });
   signinBtn.addEventListener("click", async () => {
-    const apiBase = apiBaseInput.value.trim().replace(/\/$/, "");
-    if (!apiBase) {
-      setStatus("Set API base URL before signing in.");
-      return;
-    }
-    await saveApiBase(apiBase);
+    const apiBase = await getApiBase();
     chrome.tabs.create({ url: `${apiBase}/signin` });
   });
 };
