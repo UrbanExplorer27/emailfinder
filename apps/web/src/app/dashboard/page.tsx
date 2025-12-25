@@ -8,12 +8,6 @@ import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
 
-const mockActivity = [
-  { name: "Alex Rivera", domain: "northwind.io", result: "alex@northwind.io" },
-  { name: "Priya Rao", domain: "formstack.dev", result: "priya@formstack.dev" },
-  { name: "Samir Patel", domain: "canopy.ai", result: "samir@canopy.ai" },
-];
-
 export const dynamic = "force-dynamic";
 
 export default function DashboardPage() {
@@ -23,6 +17,9 @@ export default function DashboardPage() {
   const [plan, setPlan] = useState<string | null>(null);
   const [isCreditsLoading, setIsCreditsLoading] = useState(false);
   const [creditsError, setCreditsError] = useState<string | null>(null);
+  const [activity, setActivity] = useState<{ name: string; domain: string; result: string }[]>([]);
+  const [activityError, setActivityError] = useState<string | null>(null);
+  const [activityLoading, setActivityLoading] = useState(false);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -55,6 +52,32 @@ export default function DashboardPage() {
   useEffect(() => {
     void loadCredits();
   }, [loadCredits]);
+
+  useEffect(() => {
+    const loadActivity = async () => {
+      if (!isSignedIn) return;
+      setActivityLoading(true);
+      setActivityError(null);
+      try {
+        const res = await fetch("/api/lookups", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load lookups (${res.status})`);
+        const data = await res.json();
+        const mapped: { name: string; domain: string; result: string }[] = (data.lookups ?? []).map((l: any) => ({
+          name: l.fullName ?? "Unknown",
+          domain: l.domain ?? "",
+          result: l.email ?? l.resultEmail ?? "No result",
+        }));
+        setActivity(mapped.slice(0, 5));
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to load activity";
+        setActivityError(message);
+        setActivity([]);
+      } finally {
+        setActivityLoading(false);
+      }
+    };
+    void loadActivity();
+  }, [isSignedIn]);
 
   return (
     <div className={styles.page}>
@@ -148,9 +171,15 @@ export default function DashboardPage() {
               </Link>
             </div>
             <div className={styles.activityList}>
-              {mockActivity.map((item) => (
-                <ActivityRow key={item.result} item={item} />
-              ))}
+              {activityError ? (
+                <p className={styles.statHelper}>{activityError}</p>
+              ) : activityLoading ? (
+                <p className={styles.statHelper}>Loading…</p>
+              ) : activity.length === 0 ? (
+                <p className={styles.statHelper}>Run a lookup to see results here.</p>
+              ) : (
+                activity.map((item) => <ActivityRow key={`${item.result}-${item.domain}`} item={item} />)
+              )}
             </div>
           </div>
         </section>
