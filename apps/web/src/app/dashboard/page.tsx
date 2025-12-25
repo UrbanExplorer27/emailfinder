@@ -2,6 +2,9 @@
  
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
@@ -18,6 +21,15 @@ const mockActivity = [
 ];
 
 export default function DashboardPage() {
+  const { isLoaded, isSignedIn } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.replace("/signin");
+    }
+  }, [isLoaded, isSignedIn, router]);
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
