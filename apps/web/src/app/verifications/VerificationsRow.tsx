@@ -60,11 +60,27 @@ export function VerificationsRow({ item }: { item: Verification }) {
             value={selected ?? ""}
             onChange={(e) => {
               setSelected(e.target.value);
-              setAddError(null);
               setAddedText("");
-              const list = options.find((o) => o.id === e.target.value);
+              setAddError(null);
+            }}
+          >
+            {options.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className={styles.listSaveButton}
+            disabled={!selected || isSaving}
+            onClick={() => {
+              if (!selected) return;
+              const list = options.find((o) => o.id === selected);
               if (!list) return;
               setIsSaving(true);
+              setAddError(null);
+              setAddedText("");
               fetch(`/api/lead-lists/${list.id}/items`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -76,7 +92,7 @@ export function VerificationsRow({ item }: { item: Verification }) {
               })
                 .then((res) => {
                   if (!res.ok) throw new Error(`Failed to add to ${list.name} (${res.status})`);
-                  setAddedText(`Added to ${list.name}`);
+                  setAddedText(`Saved to ${list.name}`);
                 })
                 .catch((err) => {
                   const message = err instanceof Error ? err.message : "Failed to add to list";
@@ -84,14 +100,9 @@ export function VerificationsRow({ item }: { item: Verification }) {
                 })
                 .finally(() => setIsSaving(false));
             }}
-            disabled={isSaving}
           >
-            {options.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
+            {isSaving ? "Saving..." : "Save"}
+          </button>
           {listsLoading ? <span className={styles.listHelper}>Loading lists…</span> : null}
           {listsError ? <span className={styles.listHelper}>{listsError}</span> : null}
           {addError ? <span className={styles.listHelper}>{addError}</span> : null}

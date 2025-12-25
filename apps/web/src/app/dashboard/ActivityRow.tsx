@@ -43,14 +43,12 @@ export function ActivityRow({ item }: { item: Activity }) {
     void loadLists();
   }, []);
 
-  const handleChange = async (value: string) => {
-    setAddError(null);
-    setSelected(value);
-    setAddedText("");
-    const list = lists.find((l) => l.id === value);
+  const addToList = async () => {
+    if (!selected) return;
+    const list = lists.find((l) => l.id === selected);
     if (!list) return;
-
-    // We only have a display lead; use item fields as payload
+    setAddError(null);
+    setAddedText("");
     setIsSaving(true);
     try {
       const res = await fetch(`/api/lead-lists/${list.id}/items`, {
@@ -63,7 +61,7 @@ export function ActivityRow({ item }: { item: Activity }) {
         }),
       });
       if (!res.ok) throw new Error(`Failed to add to ${list.name} (${res.status})`);
-      setAddedText(`Added to ${list.name}`);
+      setAddedText(`Saved to ${list.name}`);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to add to list";
       setAddError(message);
@@ -85,8 +83,7 @@ export function ActivityRow({ item }: { item: Activity }) {
           <select
             className={styles.listSelect}
             value={selected ?? ""}
-            onChange={(e) => handleChange(e.target.value)}
-            disabled={isSaving}
+            onChange={(e) => setSelected(e.target.value)}
           >
             {lists.map((option) => (
               <option key={option.id} value={option.id}>
@@ -94,6 +91,14 @@ export function ActivityRow({ item }: { item: Activity }) {
               </option>
             ))}
           </select>
+          <button
+            type="button"
+            className={styles.listSaveButton}
+            onClick={addToList}
+            disabled={!selected || isSaving}
+          >
+            {isSaving ? "Saving..." : "Save"}
+          </button>
           {listsLoading ? <span className={styles.listHelper}>Loading lists…</span> : null}
           {listsError ? <span className={styles.listHelper}>{listsError}</span> : null}
           {addError ? <span className={styles.listHelper}>{addError}</span> : null}
