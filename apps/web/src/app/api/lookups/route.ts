@@ -23,9 +23,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  if (user.credits <= 0) {
+  if (resultEmail && user.credits <= 0) {
     return NextResponse.json({ error: "No credits remaining" }, { status: 402 });
   }
+
+  const status = resultEmail ? "FOUND" : "FAILED";
 
   const lookup = await prisma.lookup.create({
     data: {
@@ -34,14 +36,16 @@ export async function POST(req: Request) {
       domain,
       resultEmail: resultEmail ?? null,
       confidence: confidence ?? null,
-      status: resultEmail ? "FOUND" : "PENDING",
+      status,
     },
   });
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { credits: { decrement: 1 } },
-  });
+  if (resultEmail) {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { credits: { decrement: 1 } },
+    });
+  }
 
   return NextResponse.json({ lookupId: lookup.id, status: lookup.status });
 }

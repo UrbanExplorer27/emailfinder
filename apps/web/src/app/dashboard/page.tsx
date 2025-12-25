@@ -2,7 +2,7 @@
  
 import Link from "next/link";
 import { useUser, UserButton } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
@@ -30,30 +30,31 @@ export default function DashboardPage() {
     }
   }, [isLoaded, isSignedIn, router]);
 
-  useEffect(() => {
-    const load = async () => {
-      if (!isSignedIn) return;
-      setIsCreditsLoading(true);
-      setCreditsError(null);
-      try {
-        // Ensure user row exists
-        await fetch("/api/me", { cache: "no-store" });
-        const res = await fetch("/api/credits", { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error(`Failed to load credits (${res.status})`);
-        }
-        const data = await res.json();
-        setCredits(typeof data.credits === "number" ? data.credits : null);
-        setPlan(data.planName ?? data.plan ?? null);
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Failed to load credits";
-        setCreditsError(message);
-      } finally {
-        setIsCreditsLoading(false);
+  const loadCredits = useCallback(async () => {
+    if (!isSignedIn) return;
+    setIsCreditsLoading(true);
+    setCreditsError(null);
+    try {
+      // Ensure user row exists
+      await fetch("/api/me", { cache: "no-store" });
+      const res = await fetch("/api/credits", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`Failed to load credits (${res.status})`);
       }
-    };
-    load();
+      const data = await res.json();
+      setCredits(typeof data.credits === "number" ? data.credits : null);
+      setPlan(data.planName ?? data.plan ?? null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to load credits";
+      setCreditsError(message);
+    } finally {
+      setIsCreditsLoading(false);
+    }
   }, [isSignedIn]);
+
+  useEffect(() => {
+    void loadCredits();
+  }, [loadCredits]);
 
   return (
     <div className={styles.page}>
@@ -127,7 +128,13 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <FindEmailForm compact variant="inverted" />
+            <FindEmailForm
+              compact
+              variant="inverted"
+              onLookupSuccess={() => {
+                void loadCredits();
+              }}
+            />
           </div>
 
           <div className={styles.panel}>
