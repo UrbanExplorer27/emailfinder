@@ -40,7 +40,7 @@ export default function SubscriptionPage() {
                 customer portal.
               </p>
             </div>
-            <a className={styles.primaryCta} href="/api/stripe-portal">
+            <a className={styles.primaryCta} href="/api/stripe/portal">
               Manage billing
             </a>
           </div>
