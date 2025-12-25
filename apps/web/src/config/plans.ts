@@ -1,4 +1,4 @@
-export type PlanId = "starter" | "pro";
+export type PlanId = "trial" | "starter" | "pro";
 
 export const plans: Record<
   PlanId,
@@ -8,6 +8,11 @@ export const plans: Record<
     credits: number;
   }
 > = {
+  trial: {
+    name: "Free Trial",
+    priceMonthlyUsd: 0,
+    credits: 5,
+  },
   starter: {
     name: "Starter",
     priceMonthlyUsd: 25,
@@ -20,5 +25,5 @@ export const plans: Record<
   },
 };
 
-export const defaultPlan: PlanId = "starter";
+export const defaultPlan: PlanId = "trial";
 
