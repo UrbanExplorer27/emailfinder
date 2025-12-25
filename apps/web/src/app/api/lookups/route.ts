@@ -1,0 +1,47 @@
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
+
+export async function POST(req: Request) {
+  const { userId } = auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json().catch(() => ({}));
+  const { fullName, domain, resultEmail, confidence } = body ?? {};
+
+  if (!fullName || !domain) {
+    return NextResponse.json({ error: "fullName and domain are required" }, { status: 400 });
+  }
+
+  const user = await prisma.user.findUnique({ where: { clerkUserId: userId } });
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  if (user.credits <= 0) {
+    return NextResponse.json({ error: "No credits remaining" }, { status: 402 });
+  }
+
+  const lookup = await prisma.lookup.create({
+    data: {
+      userId: user.id,
+      fullName,
+      domain,
+      resultEmail: resultEmail ?? null,
+      confidence: confidence ?? null,
+      status: resultEmail ? "FOUND" : "PENDING",
+    },
+  });
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { credits: { decrement: 1 } },
+  });
+
+  return NextResponse.json({ lookupId: lookup.id, status: lookup.status });
+}
+

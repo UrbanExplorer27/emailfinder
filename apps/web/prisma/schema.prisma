@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  clerkUserId     String   @unique
+  email           String   @unique
+  stripeCustomerId String? @unique
+  plan            String   @default("free")
+  credits         Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  lookups         Lookup[]
+  leadLists       LeadList[]
+  subscriptionEvents SubscriptionEvent[]
+  usageEvents     UsageEvent[]
+}
+
+model Lookup {
+  id           String   @id @default(uuid())
+  userId       String
+  fullName     String
+  domain       String
+  resultEmail  String?
+  confidence   String?
+  status       LookupStatus @default(PENDING)
+  createdAt    DateTime @default(now())
+
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LeadList {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     LeadListItem[]
+}
+
+model LeadListItem {
+  id          String   @id @default(uuid())
+  leadListId  String
+  name        String?
+  email       String
+  domain      String
+  createdAt   DateTime @default(now())
+
+  leadList    LeadList @relation(fields: [leadListId], references: [id], onDelete: Cascade)
+}
+
+model SubscriptionEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  payload   Json
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UsageEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  delta     Int
+  reason    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum LookupStatus {
+  PENDING
+  FOUND
+  FAILED
+}
+
