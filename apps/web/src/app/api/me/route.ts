@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { defaultPlan, plans } from "@/config/plans";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -17,8 +18,8 @@ export async function GET() {
     create: {
       clerkUserId: userId,
       email: `unknown-${userId}@placeholder.local`,
-      plan: "free",
-      credits: 100,
+      plan: defaultPlan,
+      credits: plans[defaultPlan].credits,
     },
   });
 
