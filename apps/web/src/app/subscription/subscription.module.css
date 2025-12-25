@@ -145,6 +145,81 @@
   font-weight: 600;
 }
 
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.planCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 12px;
+}
+
+.planCardHighlight {
+  border-color: #2563eb;
+  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.18);
+}
+
+.planHeader {
+  display: grid;
+  gap: 6px;
+}
+
+.planName {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.planPrice {
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.planPriceUnit {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475467;
+  margin-left: 4px;
+}
+
+.planNote {
+  color: #475467;
+  font-size: 13px;
+}
+
+.planBadge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-weight: 700;
+  font-size: 12px;
+  width: fit-content;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.featureList li::before {
+  content: "•";
+  color: #2563eb;
+  margin-right: 8px;
+}
+
 @media (max-width: 720px) {
   .cardHeader {
     flex-direction: column;

@@ -106,6 +106,57 @@ export default function SubscriptionPage() {
             </div>
           </div>
 
+          <div className={styles.planGrid}>
+            <div className={styles.planCard}>
+              <div className={styles.planHeader}>
+                <p className={styles.planName}>Starter</p>
+                <p className={styles.planPrice}>
+                  $25<span className={styles.planPriceUnit}>/mo</span>
+                </p>
+                <p className={styles.planNote}>500 credits · best for getting started</p>
+              </div>
+              <ul className={styles.featureList}>
+                <li>Up to 500 found emails/month</li>
+                <li>Save leads to your lists</li>
+                <li>Billing portal & receipts</li>
+                <li>Email finder & verifications</li>
+              </ul>
+              <button
+                className={styles.primaryCta}
+                type="button"
+                onClick={() => startCheckout("starter")}
+                disabled={isStarterLoading || isProLoading}
+              >
+                {isStarterLoading ? "Redirecting…" : "Upgrade to Starter"}
+              </button>
+            </div>
+
+            <div className={`${styles.planCard} ${styles.planCardHighlight}`}>
+              <div className={styles.planHeader}>
+                <p className={styles.planBadge}>Most Popular</p>
+                <p className={styles.planName}>Pro</p>
+                <p className={styles.planPrice}>
+                  $49<span className={styles.planPriceUnit}>/mo</span>
+                </p>
+                <p className={styles.planNote}>1000 credits · best for teams/volume</p>
+              </div>
+              <ul className={styles.featureList}>
+                <li>Up to 1,000 found emails/month</li>
+                <li>Priority credit refresh & support</li>
+                <li>Full lead list management</li>
+                <li>Billing portal & receipts</li>
+              </ul>
+              <button
+                className={styles.primaryCta}
+                type="button"
+                onClick={() => startCheckout("pro")}
+                disabled={isStarterLoading || isProLoading}
+              >
+                {isProLoading ? "Redirecting…" : "Upgrade to Pro"}
+              </button>
+            </div>
+          </div>
+
           {error ? <p className={styles.error}>{error}</p> : null}
         </section>
       </main>
