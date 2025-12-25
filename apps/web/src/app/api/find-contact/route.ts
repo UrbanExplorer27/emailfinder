@@ -9,6 +9,7 @@ type FindContactResponse =
       email: string | null;
       status: string;
       score?: number | null;
+      result?: string | null;
       raw?: unknown;
     }
   | { error: string };
@@ -55,12 +56,14 @@ export async function POST(req: NextRequest) {
     const firstCandidate = Array.isArray(data) ? data[0] : null;
     const email = firstCandidate?.email ?? null;
     const confidenceValue = firstCandidate?.confidence ?? null;
-    const status = firstCandidate?.result ?? (email ? "found" : "not_found");
+    const resultCode = firstCandidate?.result ?? null;
+    const status = resultCode ?? (email ? "found" : "not_found");
 
     const result: FindContactResponse = {
       email,
       status,
       score: confidenceValue,
+      result: resultCode,
       raw: data,
     };
 

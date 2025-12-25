@@ -14,6 +14,7 @@ type Result = {
   confidence: string;
   note: string;
   status: "found" | "not_found" | "error";
+  resultCode?: string | null;
 };
 
 export function FindEmailForm({ compact, variant = "default", onLookupSuccess }: Props) {
@@ -78,6 +79,20 @@ export function FindEmailForm({ compact, variant = "default", onLookupSuccess }:
 
       const data = await res.json();
       const foundEmail = data.email ?? null;
+      const resultCode: string | null = data.result ?? data.status ?? null;
+      const isEmailDisabled = resultCode === "email_disabled";
+
+      if (isEmailDisabled) {
+        setResult({
+          email: "No result",
+          confidence: "—",
+          note: "Email disabled for this contact.",
+          status: "not_found",
+          resultCode,
+        });
+        return;
+      }
+
       const confidenceValue =
         typeof data.score === "number" ? String(data.score) : typeof data.confidence === "string" ? data.confidence : "—";
 
@@ -121,6 +136,7 @@ export function FindEmailForm({ compact, variant = "default", onLookupSuccess }:
           confidence: "—",
           note: "No email found for this name/domain.",
           status: "not_found",
+          resultCode,
         });
       }
     } catch (err) {
@@ -129,6 +145,7 @@ export function FindEmailForm({ compact, variant = "default", onLookupSuccess }:
         confidence: "—",
         note: err instanceof Error ? err.message : "Unknown error",
         status: "error",
+        resultCode: null,
       });
     } finally {
       setIsLoading(false);
