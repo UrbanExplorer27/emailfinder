@@ -56,7 +56,8 @@
     return { domain, debug: { href, text } };
   };
 
-  const pollDocumentForWebsite = async (docProvider, attempts = 60, delay = 200) => {
+  // Fast mode: short polling window for live DOM
+  const pollDocumentForWebsite = async (docProvider, attempts = 8, delay = 200) => {
     for (let i = 0; i < attempts; i++) {
       const { domain, debug } = parseWebsiteFromDoc(docProvider());
       if (domain) return { domain, debug, attempt: i + 1 };
@@ -92,32 +93,26 @@
       if (domain) return domain;
     }
 
-    // Fetch About page when not on it, then poll the parsed HTML for Website dt/dd.
-    const fetchWithRetry = async () => {
-      const maxAttempts = 4;
-      const delay = 600;
-      for (let i = 0; i < maxAttempts; i++) {
-        try {
-          const resp = await fetch(targetUrl, { credentials: "include" });
-          if (!resp.ok) continue;
-          const html = await resp.text();
-          if (html && html.length > 0) return html;
-        } catch {
-          // ignore and retry
-        }
-        await new Promise((r) => setTimeout(r, delay));
+    // Fetch About page when not on it.
+    const fetchOnce = async () => {
+      try {
+        const resp = await fetch(targetUrl, { credentials: "include" });
+        if (!resp.ok) return "";
+        const html = await resp.text();
+        return html && html.length > 0 ? html : "";
+      } catch {
+        return "";
       }
-      return "";
     };
 
     try {
-      const html = await fetchWithRetry();
+      const html = await fetchOnce();
       if (!html) {
         if (dbg) dbg.lastFetchedHtmlSnippet = "";
         return "";
       }
       const doc = new DOMParser().parseFromString(html, "text/html");
-      const { domain, debug, attempt } = await pollDocumentForWebsite(() => doc);
+      const { domain, debug, attempt } = await pollDocumentForWebsite(() => doc, 1, 0); // single pass
       let finalDomain = domain;
       let finalDebug = debug;
       if (!finalDomain) {
