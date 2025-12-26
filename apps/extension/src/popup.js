@@ -115,6 +115,8 @@ const scrapeCompanyDomainViaContent = (companyUrl) =>
                       return (
                         !h.includes("linkedin.com") &&
                         !h.includes("licdn.com") &&
+                        !h.includes("cloudflare.com") &&
+                        !h.includes("cloudflare.net") &&
                         !h.includes("w3.org") &&
                         !h.includes("w3.com") &&
                         !h.includes("schema.org")
@@ -141,13 +143,6 @@ const scrapeCompanyDomainViaContent = (companyUrl) =>
                     if (jsonMatch?.[1]) {
                       const unescaped = jsonMatch[1].replace(/\\\//g, "/");
                       const d = normalize(unescaped);
-                      if (isGood(d)) return d;
-                    }
-                    const linkMatch = html.match(
-                      /https?:\/\/(?![^"']*linkedin\.com)(?![^"']*licdn\.com)(?![^"']*w3\.org)(?![^"']*w3\.com)(?![^"']*schema\.org)[^"'\s]+/i
-                    );
-                    if (linkMatch?.[0]) {
-                      const d = normalize(linkMatch[0]);
                       if (isGood(d)) return d;
                     }
                     return "";

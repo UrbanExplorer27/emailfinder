@@ -24,6 +24,8 @@
     return (
       !h.includes("linkedin.com") &&
       !h.includes("licdn.com") &&
+      !h.includes("cloudflare.com") &&
+      !h.includes("cloudflare.net") &&
       !h.includes("w3.org") &&
       !h.includes("w3.com") &&
       !h.includes("schema.org")
@@ -70,14 +72,6 @@
       const unescaped = jsonMatch[1].replace(/\\\//g, "/");
       const d = normalizeDomain(unescaped);
       if (d && isExternalGood(d)) return { domain: d, note: "json websiteUrl" };
-    }
-    // Fallback: first external https link that is not linkedin/licdn.
-    const linkMatch = html.match(
-      /https?:\/\/(?![^"']*linkedin\.com)(?![^"']*licdn\.com)(?![^"']*w3\.org)(?![^"']*w3\.com)(?![^"']*schema\.org)[^"'\s]+/i
-    );
-    if (linkMatch?.[0]) {
-      const d = normalizeDomain(linkMatch[0]);
-      if (d && isExternalGood(d)) return { domain: d, note: "regex external" };
     }
     return { domain: "", note: "no json domain" };
   };
