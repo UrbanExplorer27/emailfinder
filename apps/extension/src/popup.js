@@ -1,5 +1,6 @@
 const qs = (sel) => document.querySelector(sel);
-const DEFAULT_API_BASE = "https://emailfinderproj.vercel.app";
+// Point the extension at the current sandbox deployment.
+const DEFAULT_API_BASE = "https://emailfinderproj-9gpn7d42a-ss-projects-ef994bdf.vercel.app";
 
 const nameInput = qs("#full-name");
 const domainInput = qs("#domain");
@@ -18,6 +19,14 @@ const signinBtn = qs("#signin-btn");
 
 let listsLoaded = false;
 
+const ensureContentScript = (tabId) =>
+  new Promise((resolve) => {
+    chrome.scripting.executeScript(
+      { target: { tabId }, files: ["content-script.js"] },
+      () => resolve()
+    );
+  });
+
 const setStatus = (text) => {
   statusEl.textContent = text || "";
 };
@@ -26,45 +35,150 @@ const setListStatus = (text) => {
   listStatus.textContent = text || "";
 };
 
+const showToast = (message, type = "info") => {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.toggle("error", type === "error");
+  el.hidden = false;
+  setTimeout(() => {
+    el.hidden = true;
+    el.classList.remove("error");
+    el.textContent = "";
+  }, 2400);
+};
+
 const getProfileData = () =>
   new Promise((resolve) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const tab = tabs[0];
       if (!tab?.id) return resolve({ name: "", domain: "", companyName: "", companyUrl: "" });
-      chrome.tabs.sendMessage(tab.id, { type: "getProfileData" }, (resp) => {
+      chrome.tabs.sendMessage(tab.id, { type: "getProfileData" }, async (resp) => {
+        if (chrome.runtime.lastError) {
+          await ensureContentScript(tab.id);
+          chrome.tabs.sendMessage(tab.id, { type: "getProfileData" }, (resp2) => {
+            resolve(resp2 || { name: "", domain: "", companyName: "", companyUrl: "" });
+          });
+          return;
+        }
         resolve(resp || { name: "", domain: "", companyName: "", companyUrl: "" });
       });
     });
   });
 
-const scrapeCompanyDomain = async (companyUrl) => {
-  if (!companyUrl) return "";
-  const targetUrl = companyUrl.includes("/about") ? companyUrl : `${companyUrl.replace(/\/$/, "")}/about`;
-  try {
-    const resp = await fetch(targetUrl, { credentials: "include" });
-    if (!resp.ok) return "";
-    const html = await resp.text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const candidates = Array.from(
-      doc.querySelectorAll('a[href^="http"], a[data-tracking-control-name*="website"]')
-    );
-    const visit = candidates.find((el) => {
-      const text = (el.textContent || "").toLowerCase();
-      return text.includes("visit website") || text.includes("website");
-    });
-    const link = visit || candidates[0];
-    const href = link?.getAttribute("href") || "";
-    if (!href) return "";
-    try {
-      const url = new URL(href);
-      return url.hostname.replace(/^www\./, "");
-    } catch {
-      return "";
-    }
-  } catch (_e) {
-    return "";
-  }
-};
+const scrapeCompanyDomainViaContent = (companyUrl) =>
+  new Promise((resolve) => {
+    if (!companyUrl) return resolve("");
+    const aboutUrl = companyUrl.includes("/about") ? companyUrl : `${companyUrl.replace(/\/$/, "")}/about`;
+
+    const scrapeViaMessage = () =>
+      new Promise((res) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+          const tab = tabs[0];
+          if (!tab?.id) return res("");
+          await ensureContentScript(tab.id);
+          chrome.tabs.sendMessage(tab.id, { type: "scrapeCompanyDomain", companyUrl }, (resp) => {
+            if (resp?.debug && typeof window !== "undefined") {
+              window.debugLinkedInScrape = resp.debug;
+            }
+            res(resp?.domain || "");
+          });
+        });
+      });
+
+    const scrapeViaBackgroundTab = () =>
+      new Promise((res) => {
+        chrome.tabs.create({ url: aboutUrl, active: false }, (tab) => {
+          if (!tab?.id) return res("");
+          const tabId = tab.id;
+
+          const extractDomain = () =>
+            new Promise((innerRes) => {
+              chrome.scripting.executeScript(
+                {
+                  target: { tabId },
+                  func: () => {
+                    const normalize = (val) => {
+                      if (!val) return "";
+                      const t = val.trim();
+                      try {
+                        const u = new URL(t.startsWith("http") ? t : `https://${t}`);
+                        return u.hostname.replace(/^www\./, "");
+                      } catch {
+                        const noProto = t.replace(/^https?:\/\//i, "");
+                        return noProto.split("/")[0].split("?")[0].replace(/^www\./, "");
+                      }
+                    };
+                    const isGood = (host) => {
+                      if (!host) return false;
+                      const h = host.toLowerCase();
+                      return (
+                        !h.includes("linkedin.com") &&
+                        !h.includes("licdn.com") &&
+                        !h.includes("w3.org") &&
+                        !h.includes("w3.com") &&
+                        !h.includes("schema.org")
+                      );
+                    };
+                    const dts = Array.from(document.querySelectorAll("dt"));
+                    for (const dt of dts) {
+                      const label = (dt.textContent || "").trim().toLowerCase();
+                      if (!label.includes("website")) continue;
+                      const dd = dt.nextElementSibling;
+                      if (!dd) continue;
+                      const anchor = dd.querySelector("a[href]");
+                      if (!anchor) continue;
+                      const href = anchor.getAttribute("href") || "";
+                      const text = (anchor.textContent || "").trim();
+                      const fromHref = normalize(href);
+                      if (isGood(fromHref)) return fromHref;
+                      const fromText = normalize(text);
+                      if (isGood(fromText)) return fromText;
+                    }
+                    // Fallback: scan for websiteUrl in embedded JSON.
+                    const html = document.documentElement.innerHTML;
+                    const jsonMatch = html.match(/"websiteUrl":"(https?:\\\/\\\/[^"]+)"/);
+                    if (jsonMatch?.[1]) {
+                      const unescaped = jsonMatch[1].replace(/\\\//g, "/");
+                      const d = normalize(unescaped);
+                      if (isGood(d)) return d;
+                    }
+                    const linkMatch = html.match(
+                      /https?:\/\/(?![^"']*linkedin\.com)(?![^"']*licdn\.com)(?![^"']*w3\.org)(?![^"']*w3\.com)(?![^"']*schema\.org)[^"'\s]+/i
+                    );
+                    if (linkMatch?.[0]) {
+                      const d = normalize(linkMatch[0]);
+                      if (isGood(d)) return d;
+                    }
+                    return "";
+                  },
+                },
+                (results) => {
+                  const domain = results?.[0]?.result || "";
+                  innerRes(domain);
+                }
+              );
+            });
+
+          const listener = async (tabIdUpdated, info) => {
+            if (tabIdUpdated === tabId && info.status === "complete") {
+              chrome.tabs.onUpdated.removeListener(listener);
+              const domain = await extractDomain();
+              chrome.tabs.remove(tabId);
+              res(domain);
+            }
+          };
+          chrome.tabs.onUpdated.addListener(listener);
+        });
+      });
+
+    (async () => {
+      const domain = await scrapeViaMessage();
+      if (domain) return resolve(domain);
+      const fallback = await scrapeViaBackgroundTab();
+      resolve(fallback);
+    })();
+  });
 
 const getApiBase = async () => {
   return DEFAULT_API_BASE;
@@ -193,6 +307,16 @@ const onSave = async () => {
   }
 };
 
+const isLikelyDomain = (val) => {
+  if (!val) return false;
+  const trimmed = val.trim();
+  const base = trimmed.split(".")[0] || trimmed;
+  const host = trimmed.toLowerCase();
+  const hasLetter = /[a-zA-Z]/.test(base);
+  const isLinkedInHost = host.includes("linkedin.com") || host.includes("licdn.com");
+  return hasLetter && !isLinkedInHost;
+};
+
 const init = async () => {
   const apiBase = await getApiBase();
   const isAuthed = await checkSession(apiBase);
@@ -202,19 +326,22 @@ const init = async () => {
 
   const profile = await getProfileData();
   if (profile?.name) nameInput.value = profile.name;
-  if (profile?.domain) {
-    domainInput.value = profile.domain;
-  } else if (profile?.companyUrl) {
+
+  // Always prefer scraping the About page via content script; do not use slug guesses.
+  if (profile?.companyUrl) {
     setStatus("Fetching company website…");
-    const scrapedDomain = await scrapeCompanyDomain(profile.companyUrl);
-    if (scrapedDomain) {
+    const scrapedDomain = await scrapeCompanyDomainViaContent(profile.companyUrl);
+    if (scrapedDomain && isLikelyDomain(scrapedDomain)) {
       domainInput.value = scrapedDomain;
       setStatus("Company domain detected.");
+      showToast(`Domain detected: ${scrapedDomain}`, "info");
     } else {
       setStatus("Company domain not detected—please enter it.");
+      showToast("Domain not detected.", "error");
     }
   } else if (profile?.companyName) {
     setStatus("Company domain not detected—please enter it.");
+    showToast("Domain not detected.", "error");
   }
 
   findBtn.addEventListener("click", onFind);
@@ -223,7 +350,18 @@ const init = async () => {
   refreshBtn.addEventListener("click", async () => {
     const refreshed = await getProfileData();
     if (refreshed?.name) nameInput.value = refreshed.name;
-    if (refreshed?.domain) domainInput.value = refreshed.domain;
+    if (refreshed?.companyUrl) {
+      setStatus("Fetching company website…");
+      const scrapedDomain = await scrapeCompanyDomainViaContent(refreshed.companyUrl);
+      if (scrapedDomain && isLikelyDomain(scrapedDomain)) {
+        domainInput.value = scrapedDomain;
+        setStatus("Company domain detected.");
+        showToast(`Domain detected: ${scrapedDomain}`, "info");
+      } else {
+        setStatus("Company domain not detected—please enter it.");
+        showToast("Domain not detected.", "error");
+      }
+    }
   });
   signinBtn.addEventListener("click", async () => {
     const apiBase = await getApiBase();

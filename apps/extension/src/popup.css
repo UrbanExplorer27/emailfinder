@@ -163,3 +163,22 @@ select {
   font-size: 12px;
 }
 
+.toast {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  left: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #0ea5e9;
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+  z-index: 9999;
+}
+
+.toast.error {
+  background: #dc2626;
+}
+
