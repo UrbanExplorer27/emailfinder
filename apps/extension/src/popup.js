@@ -255,7 +255,8 @@ const onFind = async () => {
       throw new Error(text || `Lookup failed (${res.status})`);
     }
     const data = await res.json();
-    if (data.email) {
+    const isFound = data.result === "ok" && data.email;
+    if (isFound) {
       showResult(data.email, data.status ?? "Found", "found");
       setStatus("Found");
       if (!listsLoaded) {
@@ -266,12 +267,14 @@ const onFind = async () => {
         }
       }
     } else {
-      showResult("No result", data.status ?? "No email found", "not_found");
+      showResult("No result", "No email found", "not_found");
       setStatus("No email found");
+      showToast("No email found", "error");
     }
   } catch (err) {
     showResult("Lookup failed", err instanceof Error ? err.message : "Unknown error", "error");
     setStatus(err instanceof Error ? err.message : "Lookup failed");
+    showToast("Lookup failed", "error");
   }
 };
 
