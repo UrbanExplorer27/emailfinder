@@ -123,6 +123,12 @@ select {
   font-size: 12px;
 }
 
+.badge.not-found {
+  background: #e2e8f0;
+  color: #475467;
+  border-color: #e2e8f0;
+}
+
 .result-row {
   display: flex;
   justify-content: space-between;

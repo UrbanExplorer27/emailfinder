@@ -214,7 +214,15 @@ const showResult = (email, note, status) => {
   resultNoteEl.textContent = note || "";
   resultStatusEl.textContent = status === "found" ? "Found" : status === "not_found" ? "Not found" : "Error";
   resultStatusEl.dataset.state = status;
+  resultStatusEl.classList.toggle("not-found", status === "not_found");
   resultCard.hidden = false;
+
+  // Hide copy button if not found.
+  if (status === "found") {
+    copyBtn.hidden = false;
+  } else {
+    copyBtn.hidden = true;
+  }
 };
 
 const copyToClipboard = async (text) => {
