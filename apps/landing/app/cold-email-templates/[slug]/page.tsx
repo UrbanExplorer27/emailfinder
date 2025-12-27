@@ -4,6 +4,30 @@ import { fetchPostBySlug } from "@/lib/ghost";
 
 export const dynamic = "force-dynamic";
 
+type Section = { heading: string; content: string };
+
+function parseSections(html?: string): Section[] {
+  if (!html) return [];
+  const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
+  const matches: { heading: string; index: number; length: number }[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = h2Regex.exec(html)) !== null) {
+    matches.push({ heading: m[1] || "", index: m.index, length: m[0].length });
+  }
+  if (!matches.length) return [];
+  const sections: Section[] = [];
+  for (let i = 0; i < matches.length; i++) {
+    const start = matches[i].index + matches[i].length;
+    const end = i + 1 < matches.length ? matches[i + 1].index : html.length;
+    const body = html.slice(start, end).trim();
+    sections.push({
+      heading: matches[i].heading,
+      content: body,
+    });
+  }
+  return sections;
+}
+
 export default async function ColdEmailTemplate({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await fetchPostBySlug(slug);
@@ -11,6 +35,8 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
   if (!post || !isTemplate) {
     notFound();
   }
+
+  const sections = parseSections(post.html);
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
@@ -36,9 +62,26 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
             <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
             <p className="text-white/80 text-lg">{post.excerpt || post.meta_description || ""}</p>
 
-            <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
-            </article>
+            {sections.length ? (
+              <div className="space-y-4">
+                {sections.map((sec, idx) => (
+                  <div
+                    key={`${sec.heading}-${idx}`}
+                    className="rounded-xl border border-white/10 bg-white/5 p-4 shadow-md shadow-black/15"
+                  >
+                    <h2 className="text-lg font-semibold text-white mb-2">{sec.heading}</h2>
+                    <div
+                      className="prose prose-invert prose-p:text-white/80 prose-li:text-white/80 prose-a:text-sky-200 max-w-none"
+                      dangerouslySetInnerHTML={{ __html: sec.content }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
+                <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
+              </article>
+            )}
           </div>
 
           <aside className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl shadow-black/20 text-sm text-white/80">
