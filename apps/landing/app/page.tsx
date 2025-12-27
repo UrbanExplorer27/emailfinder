@@ -123,12 +123,13 @@ export default function Home() {
               your outreach so you can focus on reaching the people you chose—without paying for results you can’t use.
             </p>
             <p className="text-white/70">
-              Short version: Email is the most effective outreach channel—but only when the data is clean. Stop wasting time
-              fixing bad lists. Remove guesswork from your campaigns and pay only for emails you can actually use.
+              Turn prospects into real opportunities. Email is the most effective outreach channel—but only when the data is
+              clean. Stop wasting time fixing bad lists. Remove guesswork from your campaigns and pay only for emails you can
+              actually use.
             </p>
             <p className="text-white/60 text-sm">
-              Sharpest: Direct access beats perfect targeting. Remove guesswork from outbound and focus on making
-              contact—not cleaning data.
+              Turn prospects into real opportunities. Direct access beats perfect targeting. Remove guesswork from outbound
+              and focus on making contact—not cleaning data.
             </p>
           </section>
 
