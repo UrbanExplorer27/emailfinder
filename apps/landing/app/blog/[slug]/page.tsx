@@ -4,8 +4,17 @@ import { fetchPostBySlug } from "@/lib/ghost";
 
 export const dynamic = "force-dynamic";
 
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-  const post = await fetchPostBySlug(params.slug);
+"use client";
+
+import { use } from "react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { fetchPostBySlug } from "@/lib/ghost";
+
+export default function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const postPromise = fetchPostBySlug(slug);
+  const post = use(postPromise);
   if (!post) {
     notFound();
   }
