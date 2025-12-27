@@ -39,9 +39,6 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
           </div>
           <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
           <p className="text-lg text-white/80">{post.excerpt || post.meta_description || ""}</p>
-          <p className="text-white/60 text-sm">
-            Copy, adapt, and ship fast—keep the bones, swap the proof, and keep one CTA.
-          </p>
         </header>
 
         <div className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
