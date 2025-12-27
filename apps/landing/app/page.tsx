@@ -155,12 +155,20 @@ export default function Home() {
               <p className="text-sm text-white/80">Lead gen with a LinkedIn extension and any-company finder</p>
             </div>
           </div>
-          <a
-            href="#pricing"
-            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
-          >
-            View plans →
-          </a>
+          <div className="hidden sm:flex items-center gap-3">
+            <a
+              href="/blog"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
+            >
+              Blog
+            </a>
+            <a
+              href="#pricing"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
+            >
+              View plans →
+            </a>
+          </div>
         </header>
 
         <main className="mt-10 space-y-14 lg:space-y-16">
@@ -366,6 +374,9 @@ export default function Home() {
           <div className="flex gap-3">
             <a className="hover:text-white" href="#pricing">
               Pricing
+            </a>
+            <a className="hover:text-white" href="/blog">
+              Blog
             </a>
             <a className="hover:text-white" href="#">
               Get started
