@@ -1,19 +1,13 @@
 import Link from "next/link";
-import { fetchAllSlugs, fetchPostBySlug } from "@/lib/ghost";
+import { notFound } from "next/navigation";
+import { fetchPostBySlug } from "@/lib/ghost";
 
-export async function generateStaticParams() {
-  const slugs = await fetchAllSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const post = await fetchPostBySlug(params.slug);
   if (!post) {
-    return (
-      <div className="min-h-screen bg-[#0b1221] text-white flex items-center justify-center">
-        <p className="text-white/70">Post not found.</p>
-      </div>
-    );
+    notFound();
   }
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
