@@ -12,14 +12,13 @@ export const ghostApi =
       })
     : null;
 
-export const fetchPosts = async (tag?: string) => {
+export const fetchPosts = async () => {
   if (!ghostApi) return [];
-  const tagFilter = tag ? `tag:${tag.toLowerCase().replace(/\s+/g, "-")}` : undefined;
   const posts = await ghostApi.posts.browse({
     include: ["tags", "authors"],
     limit: 9,
     order: "published_at DESC",
-    filter: tagFilter,
+    filter: "tag:blog",
   });
   return posts;
 };
@@ -31,8 +30,11 @@ export const fetchPostBySlug = async (slug: string) => {
       { slug },
       {
         include: ["tags", "authors"],
+        filter: "tag:blog",
       }
     );
+    const hasBlogTag = (post.tags || []).some((t: any) => (t?.slug === "blog" || t?.name?.toLowerCase() === "blog"));
+    if (!hasBlogTag) return null;
     return post;
   } catch (_e) {
     return null;
