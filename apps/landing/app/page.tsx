@@ -40,7 +40,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Email Finder</p>
-              <p className="text-sm text-white/80">Verified emails from LinkedIn</p>
+              <p className="text-sm text-white/80">Lead gen with a LinkedIn extension and any-company finder</p>
             </div>
           </div>
           <a
