@@ -313,10 +313,8 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Pricing</p>
-                <h2 className="text-2xl font-bold text-white">Start free, upgrade when you’re ready</h2>
-                <p className="text-white/75">
-                  Free trial: 5 credits. Starter: 500 credits. Pro: 1,000 credits. Stripe-powered billing.
-                </p>
+                <h2 className="text-2xl font-bold text-white">Pay only when outreach actually works</h2>
+                <p className="text-white/75">Only usable results count. No charges for junk data.</p>
               </div>
               <a
                 href="#"
