@@ -235,6 +235,33 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
+            <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why this matters</p>
+            <h2 className="text-2xl font-bold text-white">You don’t have a lead problem. You have an access problem.</h2>
+            <div className="space-y-3 text-white/80 leading-relaxed">
+              <p>
+                Most outbound campaigns fail before the first message is ever read. Not because the offer is wrong or the
+                copy is weak—but because the person was never truly reachable. A guessed email, a stale address, or a bad list
+                quietly kills the opportunity and leaves you wondering what went wrong.
+              </p>
+              <p>
+                Email remains the highest-converting way to start a real business conversation. It’s private. It allows follow-up.
+                It creates a paper trail you can measure and improve. But only if the address is good. Bad data doesn’t just waste a
+                send—it muddies results, damages sender reputation, and makes every future campaign harder to trust.
+              </p>
+              <p>
+                This tool exists to fix the very first link in the chain. It turns “this is the person I want” into “this is someone
+                I can actually reach.” By removing unreliable inputs, it gives you clean signal: when outreach underperforms, you
+                know why—and when it works, you can repeat it with confidence. No guessing whether the problem was the list, the
+                message, or the channel.
+              </p>
+              <p className="font-semibold text-white">
+                Good outbound isn’t about sending more emails. It’s about making contact—and knowing when you have. That’s what this tool
+                is built to do.
+              </p>
+            </div>
+          </section>
         </main>
 
         <footer className="mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-white/10 pt-4 text-sm text-white/60">
