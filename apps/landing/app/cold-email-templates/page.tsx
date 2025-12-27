@@ -4,10 +4,7 @@ import Link from "next/link";
 import { fetchPosts } from "@/lib/ghost";
 
 export default async function ColdEmailTemplates() {
-  const posts = await fetchPosts();
-  const templates = posts.filter((post: any) =>
-    (post.tags || []).some((t: any) => t.name?.toLowerCase() === "cold email template")
-  );
+  const templates = await fetchPosts("cold email template");
 
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">

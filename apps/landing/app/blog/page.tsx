@@ -2,7 +2,7 @@ import Link from "next/link";
 import { fetchPosts } from "@/lib/ghost";
 
 export default async function BlogIndex() {
-  const posts = await fetchPosts();
+  const posts = await fetchPosts("blog");
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
