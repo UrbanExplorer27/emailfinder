@@ -156,12 +156,28 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-3">
-            <a
-              href="/blog"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
-            >
-              Blog
-            </a>
+            <div className="relative group">
+              <button
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
+              >
+                Resources
+                <span className="text-white/60">▼</span>
+              </button>
+              <div className="absolute right-0 mt-2 hidden min-w-[200px] flex-col rounded-xl border border-white/10 bg-[#0f172a] p-2 shadow-xl shadow-black/30 group-hover:flex">
+                <a
+                  href="/blog"
+                  className="rounded-lg px-3 py-2 text-sm text-white hover:bg-white/10"
+                >
+                  Blog
+                </a>
+                <a
+                  href="/cold-email-templates"
+                  className="rounded-lg px-3 py-2 text-sm text-white hover:bg-white/10"
+                >
+                  Cold email templates
+                </a>
+              </div>
+            </div>
             <a
               href="#pricing"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
