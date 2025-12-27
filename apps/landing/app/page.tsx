@@ -123,7 +123,7 @@ function TryItDemo() {
                     : "border-white/20 text-white/70"
               }`}
             >
-              {status === "found" ? "found (ok)" : status === "checking" ? "checking" : "idle"}
+              {status === "found" ? "found" : status === "checking" ? "checking" : "idle"}
             </span>
           </div>
           <p className="text-white/70">
