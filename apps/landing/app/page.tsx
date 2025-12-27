@@ -190,7 +190,7 @@ export default function Home() {
                 <span className="inline-flex items-center gap-1">Works anywhere you have a name + company</span>
               </p>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
-                Turn prospects into real opportunities.
+                The email finder that turns prospects into real opportunities.
               </h1>
               <p className="text-lg text-white/80">
                 Get direct access to email—the most effective way to start real conversations. Remove guesswork from outbound
@@ -243,7 +243,7 @@ export default function Home() {
           </section>
 
           <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/15">
-            <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities.</h2>
+            <h2 className="text-2xl font-bold text-white">It all starts with an email.</h2>
             <p className="text-white/80">
               Email is still the most effective way to start a business conversation. But most email finder tools create a
               new problem: bad data. Bad data means more cleanup, more second-guessing, and more time spent fixing lists
@@ -258,7 +258,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-sky-200">How it works</p>
-                <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities</h2>
+                <h2 className="text-2xl font-bold text-white">From prospect to conversation</h2>
               </div>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
