@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const stats = [
   { label: "120k+ prospects turned into reachable contacts", value: "120k+" },
   { label: "Consistent access you can plan around", value: "78%" },
