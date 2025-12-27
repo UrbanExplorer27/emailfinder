@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tryghost/content-api": "^1.11.23",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "next": "16.1.1"

@@ -1,21 +1,20 @@
-"use client";
-
 import Link from "next/link";
+import { fetchAllSlugs, fetchPostBySlug } from "@/lib/ghost";
 
-const samplePost = {
-  title: "Clean data makes outbound predictable",
-  date: "2025-01-15",
-  tags: ["Outbound", "Data quality"],
-  hero:
-    "Eliminate bad data before it reaches your lists. Keep credits for results you can actually use, and give reps certainty on access.",
-  body: [
-    "Email is still the fastest way to start a business conversation—but only if the address is valid. When invalid_mx and email_disabled leak into your lists, reps lose time cleaning and confidence stalls.",
-    "We filter out junk at the source: result=ok is the only state that counts as “found.” Credits aren’t burned on bad rows. The Chrome extension captures name + company from LinkedIn; the web app and CSV import handle everyone else.",
-    "Lead lists stay synced between the extension and the app. Save, export, or kick off outreach with data you can trust. Predictable access means you can forecast, sequence, and measure without second-guessing.",
-  ],
-};
+export async function generateStaticParams() {
+  const slugs = await fetchAllSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
-export default function BlogPost() {
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await fetchPostBySlug(params.slug);
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-[#0b1221] text-white flex items-center justify-center">
+        <p className="text-white/70">Post not found.</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
@@ -25,24 +24,24 @@ export default function BlogPost() {
             ← Back to blog
           </Link>
           <div className="flex gap-2">
-            {samplePost.tags.map((tag) => (
-              <span key={tag} className="rounded-full border border-white/15 px-2 py-1 text-xs">
-                {tag}
+            {(post.tags || []).map((tag) => (
+              <span key={tag.id} className="rounded-full border border-white/15 px-2 py-1 text-xs">
+                {tag.name}
               </span>
             ))}
           </div>
         </div>
 
         <header className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.2em] text-sky-200">{samplePost.date}</p>
-          <h1 className="text-3xl font-bold leading-tight">{samplePost.title}</h1>
-          <p className="text-lg text-white/80">{samplePost.hero}</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-sky-200">
+            {post.published_at ? new Date(post.published_at).toISOString().slice(0, 10) : ""}
+          </p>
+          <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
+          <p className="text-lg text-white/80">{post.excerpt || post.meta_description || ""}</p>
         </header>
 
         <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
-          {samplePost.body.map((para, idx) => (
-            <p key={idx}>{para}</p>
-          ))}
+          <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
         </article>
       </div>
     </div>

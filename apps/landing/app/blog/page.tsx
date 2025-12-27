@@ -1,35 +1,8 @@
-"use client";
-
 import Link from "next/link";
+import { fetchPosts } from "@/lib/ghost";
 
-const posts = [
-  {
-    slug: "clean-outbound-data",
-    title: "Clean data makes outbound predictable",
-    excerpt:
-      "Why result=ok matters, how to stop burning credits on junk, and what predictable access does for pipeline.",
-    date: "2025-01-15",
-    tags: ["Outbound", "Data quality"],
-  },
-  {
-    slug: "linkedin-to-real-contact",
-    title: "From LinkedIn profile to real contact in one step",
-    excerpt:
-      "A simple flow: capture name + company, verify, and save—without bouncing between tools or cleaning spreadsheets.",
-    date: "2025-01-08",
-    tags: ["LinkedIn", "Extension"],
-  },
-  {
-    slug: "stop-paying-for-bad-emails",
-    title: "Stop paying for emails you can’t use",
-    excerpt:
-      "What happens when invalid_mx and email_disabled are filtered out before they hit your lists.",
-    date: "2024-12-12",
-    tags: ["Credits", "Reliability"],
-  },
-];
-
-export default function BlogIndex() {
+export default async function BlogIndex() {
+  const posts = await fetchPosts();
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
@@ -50,13 +23,15 @@ export default function BlogIndex() {
               href={`/blog/${post.slug}`}
               className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/15 hover:border-white/25 transition"
             >
-              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">{post.date}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">
+                {post.published_at ? new Date(post.published_at).toISOString().slice(0, 10) : ""}
+              </p>
               <h2 className="mt-2 text-xl font-semibold text-white">{post.title}</h2>
-              <p className="mt-2 text-white/70 text-sm">{post.excerpt}</p>
+              <p className="mt-2 text-white/70 text-sm">{post.excerpt || post.meta_description || ""}</p>
               <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/65">
-                {post.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-white/15 px-2 py-1">
-                    {tag}
+                {(post.tags || []).map((tag) => (
+                  <span key={tag.id} className="rounded-full border border-white/15 px-2 py-1">
+                    {tag.name}
                   </span>
                 ))}
               </div>
