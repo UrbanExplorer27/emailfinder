@@ -114,50 +114,23 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/15">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Problem → solution</p>
-                <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities.</h2>
-                <p className="text-white/75">
-                  Email is still the most effective way to start a business conversation. Bad data kills it. Here are
-                  three cuts you can use above the fold.
-                </p>
-              </div>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 shadow-sm shadow-black/10">
-                <span className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
-                  Full
-                </span>
-                <p className="text-white/85">
-                  Because email is still the most effective way to start a business conversation. But most email finder
-                  tools create a new problem: bad data. Bad data means more cleanup, more second-guessing, and more time
-                  spent fixing lists instead of making contact. This tool removes that friction at the source. It strips
-                  out guesswork from your outreach so you can focus on reaching the people you chose—without paying for
-                  results you can’t use.
-                </p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 shadow-sm shadow-black/10">
-                <span className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
-                  Short
-                </span>
-                <p className="text-white/80">
-                  Turn prospects into real opportunities. Email is the most effective outreach channel—but only when the
-                  data is clean. Stop wasting time fixing bad lists. Remove guesswork from your campaigns and pay only for
-                  emails you can actually use.
-                </p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 shadow-sm shadow-black/10">
-                <span className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
-                  Sharp
-                </span>
-                <p className="text-white/70">
-                  Turn prospects into real opportunities. Direct access beats perfect targeting. Remove guesswork from
-                  outbound and focus on making contact—not cleaning data.
-                </p>
-              </div>
-            </div>
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/15">
+            <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities.</h2>
+            <p className="text-white/80">
+              Because email is still the most effective way to start a business conversation. But most email finder tools
+              create a new problem: bad data. Bad data means more cleanup, more second-guessing, and more time spent fixing
+              lists instead of making contact. This tool removes that friction at the source. It strips out guesswork from
+              your outreach so you can focus on reaching the people you chose—without paying for results you can’t use.
+            </p>
+            <p className="text-white/70">
+              Turn prospects into real opportunities. Email is the most effective outreach channel—but only when the data is
+              clean. Stop wasting time fixing bad lists. Remove guesswork from your campaigns and pay only for emails you can
+              actually use.
+            </p>
+            <p className="text-white/60">
+              Turn prospects into real opportunities. Direct access beats perfect targeting. Remove guesswork from outbound
+              and focus on making contact—not cleaning data.
+            </p>
           </section>
 
           <section id="how-it-works" className="space-y-4">
