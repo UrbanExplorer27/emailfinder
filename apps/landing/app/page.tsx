@@ -30,7 +30,7 @@ const steps = [
 ];
 
 const plans = [
-  { name: "Free trial", price: "$0", detail: "5 credits to prove it works", cta: "Start free", highlight: false },
+  { name: "Free trial", price: "$0", detail: "5 credits to see real results", cta: "Start free", highlight: false },
   { name: "Starter", price: "$25/mo", detail: "500 credits + mass lookup", cta: "Upgrade to Starter", highlight: true },
   { name: "Pro", price: "$49/mo", detail: "1,000 credits + priority API", cta: "Upgrade to Pro", highlight: false },
 ];
