@@ -4,30 +4,6 @@ import { fetchPostBySlug } from "@/lib/ghost";
 
 export const dynamic = "force-dynamic";
 
-type Section = { heading: string; content: string };
-
-function parseSections(html?: string): Section[] {
-  if (!html) return [];
-  const h2Regex = /<h2[^>]*>(.*?)<\/h2>/gi;
-  const matches: { heading: string; index: number; length: number }[] = [];
-  let m: RegExpExecArray | null;
-  while ((m = h2Regex.exec(html)) !== null) {
-    matches.push({ heading: m[1] || "", index: m.index, length: m[0].length });
-  }
-  if (!matches.length) return [];
-  const sections: Section[] = [];
-  for (let i = 0; i < matches.length; i++) {
-    const start = matches[i].index + matches[i].length;
-    const end = i + 1 < matches.length ? matches[i + 1].index : html.length;
-    const body = html.slice(start, end).trim();
-    sections.push({
-      heading: matches[i].heading,
-      content: body,
-    });
-  }
-  return sections;
-}
-
 export default async function ColdEmailTemplate({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await fetchPostBySlug(slug);
@@ -35,12 +11,10 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
   if (!post || !isTemplate) {
     notFound();
   }
-
-  const sections = parseSections(post.html);
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
-      <div className="relative mx-auto max-w-6xl px-5 py-10 lg:py-14 space-y-8">
+      <div className="relative mx-auto max-w-3xl px-5 py-10 lg:py-14 space-y-8">
         <div className="flex items-center justify-between text-sm text-white/70">
           <Link href="/cold-email-templates" className="hover:text-white">
             ← Back to templates
@@ -54,46 +28,25 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[2fr_1fr] items-start">
-          <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
+        <header className="space-y-3 rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/10 via-indigo-500/10 to-transparent p-6 shadow-xl shadow-sky-500/20">
+          <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-[0.2em] text-sky-200">
               {post.published_at ? new Date(post.published_at).toISOString().slice(0, 10) : ""}
             </p>
-            <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
-            <p className="text-white/80 text-lg">{post.excerpt || post.meta_description || ""}</p>
-
-            {sections.length ? (
-              <div className="space-y-4">
-                {sections.map((sec, idx) => (
-                  <div
-                    key={`${sec.heading}-${idx}`}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4 shadow-md shadow-black/15"
-                  >
-                    <h2 className="text-lg font-semibold text-white mb-2">{sec.heading}</h2>
-                    <div
-                      className="prose prose-invert prose-p:text-white/80 prose-li:text-white/80 prose-a:text-sky-200 max-w-none"
-                      dangerouslySetInnerHTML={{ __html: sec.content }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
-              </article>
-            )}
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80">
+              Cold email template
+            </span>
           </div>
+          <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
+          <p className="text-lg text-white/80">{post.excerpt || post.meta_description || ""}</p>
+          <p className="text-white/60 text-sm">
+            Copy, adapt, and ship fast—keep the bones, swap the proof, and keep one CTA.
+          </p>
+        </header>
 
-          <aside className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl shadow-black/20 text-sm text-white/80">
-            <p className="text-xs uppercase tracking-[0.2em] text-sky-200">How to use</p>
-            <ul className="space-y-2">
-              <li>Use placeholders like {"{{first_name}}"}, {"{{company}}"}, {"{{problem}}"}, {"{{team}}"}.</li>
-              <li>Keep one CTA. Under 5 lines performs best.</li>
-              <li>Subject lines can be A/B tested; include 2–3 variations in the post.</li>
-              <li>Tag your Ghost post with “cold email template” to appear here.</li>
-            </ul>
-          </aside>
-        </div>
+        <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/20">
+          <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
+        </article>
       </div>
     </div>
   );
