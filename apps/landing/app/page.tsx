@@ -124,6 +124,28 @@ export default function Home() {
             </p>
           </section>
 
+          <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] items-center rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-sky-500/10">
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">See it in action</p>
+              <h3 className="text-2xl font-bold text-white">Extension + web app, working together</h3>
+              <p className="text-white/75">
+                Watch how the Chrome extension turns a LinkedIn profile into a real contact, only counts result=ok, and
+                saves straight into your lead list. The same verifier powers single lookups, CSV imports, and exports.
+              </p>
+              <p className="text-white/60 text-sm">
+                Swap the placeholder below with your MP4/WebM/Lottie. Keep it light (1–2MB) and load on view for speed.
+              </p>
+            </div>
+            <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-lg shadow-black/20 aspect-[16/9]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white/70">
+                <div className="h-12 w-12 rounded-full border border-white/30 flex items-center justify-center text-lg font-semibold">
+                  ▶
+                </div>
+                <p className="text-sm">Animation placeholder — replace with your demo</p>
+              </div>
+            </div>
+          </section>
+
           <section id="how-it-works" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
