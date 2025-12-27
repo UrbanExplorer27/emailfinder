@@ -44,9 +44,9 @@ export default async function ColdEmailTemplate({ params }: { params: Promise<{ 
           </p>
         </header>
 
-        <article className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/20">
+        <div className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-a:text-sky-200 max-w-none">
           <div dangerouslySetInnerHTML={{ __html: post.html || "" }} />
-        </article>
+        </div>
       </div>
     </div>
   );
