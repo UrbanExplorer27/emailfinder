@@ -1,6 +1,4 @@
-import { useState } from "react";
-
- "use client";
+"use client";
 
 import { useState } from "react";
 
