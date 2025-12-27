@@ -29,12 +29,12 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-3">
-            <div className="relative group">
-              <button className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition">
+            <details className="relative">
+              <summary className="list-none inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition cursor-pointer">
                 Resources
                 <span className="text-white/60">▼</span>
-              </button>
-              <div className="absolute right-0 mt-2 hidden min-w-[200px] flex-col rounded-xl border border-white/10 bg-[#0f172a] p-2 shadow-xl shadow-black/30 group-hover:flex">
+              </summary>
+              <div className="absolute right-0 mt-2 min-w-[200px] flex-col rounded-xl border border-white/10 bg-[#0f172a] p-2 shadow-xl shadow-black/30">
                 <a href="/blog" className="rounded-lg px-3 py-2 text-sm text-white hover:bg-white/10">
                   Blog
                 </a>
@@ -42,7 +42,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                   Cold email templates
                 </a>
               </div>
-            </div>
+            </details>
             <a
               href="/#pricing"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
