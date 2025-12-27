@@ -74,14 +74,14 @@ export default function Home() {
                   className="inline-flex justify-center rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/40"
                 >
                   Start free — 5 credits
-                </a>
-                <a
+          </a>
+          <a
                   href="#how-it-works"
                   className="inline-flex justify-center rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
                 >
                   See how it works
-                </a>
-              </div>
+          </a>
+        </div>
               <div className="grid grid-cols-3 gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-center text-sm">
                 {stats.map((s) => (
                   <div key={s.label} className="space-y-1">
@@ -114,56 +114,17 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
-            <div className="flex flex-col gap-2">
-              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why it converts</p>
-              <h2 className="text-2xl font-bold text-white">Only verified results count as “found”</h2>
-              <p className="text-white/75">
-                We only mark “found” when the result code is ok. No credits burned on invalid_mx, email_disabled, or
-                redirects. That means cleaner lists and fewer bounces.
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Extension + web app</p>
-                <p className="text-white/75 mt-2">
-                  Use the Chrome extension on LinkedIn; manage credits, lead lists, mass CSV, and billing in the web app.
-                </p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Lead lists that stay synced</p>
-                <p className="text-white/75 mt-2">
-                  Save to lists right from the extension or dashboard, export anytime, and keep your team aligned.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
-            <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why this matters</p>
-            <h2 className="text-2xl font-bold text-white">You don’t have a lead problem. You have an access problem.</h2>
-            <div className="space-y-3 text-white/80 leading-relaxed">
-              <p>
-                Most outbound campaigns fail before the first message is ever read. Not because the offer is wrong or the
-                copy is weak—but because the person was never truly reachable. A guessed email, a stale address, or a bad list
-                quietly kills the opportunity and leaves you wondering what went wrong.
-              </p>
-              <p>
-                Email remains the highest-converting way to start a real business conversation. It’s private. It allows follow-up.
-                It creates a paper trail you can measure and improve. But only if the address is good. Bad data doesn’t just waste a
-                send—it muddies results, damages sender reputation, and makes every future campaign harder to trust.
-              </p>
-              <p>
-                This tool exists to fix the very first link in the chain. It turns “this is the person I want” into “this is someone
-                I can actually reach.” By removing unreliable inputs, it gives you clean signal: when outreach underperforms, you
-                know why—and when it works, you can repeat it with confidence. No guessing whether the problem was the list, the
-                message, or the channel.
-              </p>
-              <p className="font-semibold text-white">
-                Good outbound isn’t about sending more emails. It’s about making contact—and knowing when you have. That’s what this tool
-                is built to do.
-              </p>
-            </div>
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/15">
+            <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities.</h2>
+            <p className="text-white/80">
+              Email is still the most effective way to start a business conversation—but most email finders create a new
+              problem: bad data. Bad data means more cleanup, more second-guessing, and more time fixing lists instead of
+              making contact. We remove that friction at the source so you pay only for emails you can actually use.
+            </p>
+            <p className="text-white/70">
+              Prefer the short version? Email works when the data is clean. Stop wasting time fixing bad lists—remove
+              guesswork from your campaigns and focus on making contact, not cleaning data.
+            </p>
           </section>
 
           <section id="how-it-works" className="space-y-4">
@@ -191,6 +152,7 @@ export default function Home() {
               ))}
             </div>
           </section>
+
           <section className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/15 via-indigo-500/10 to-transparent p-6 shadow-xl shadow-sky-500/20">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Chrome extension</p>
@@ -286,33 +248,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
-            <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why this matters</p>
-            <h2 className="text-2xl font-bold text-white">You don’t have a lead problem. You have an access problem.</h2>
-            <div className="space-y-3 text-white/80 leading-relaxed">
-              <p>
-                Most outbound campaigns fail before the first message is ever read. Not because the offer is wrong or the
-                copy is weak—but because the person was never truly reachable. A guessed email, a stale address, or a bad list
-                quietly kills the opportunity and leaves you wondering what went wrong.
-              </p>
-              <p>
-                Email remains the highest-converting way to start a real business conversation. It’s private. It allows follow-up.
-                It creates a paper trail you can measure and improve. But only if the address is good. Bad data doesn’t just waste a
-                send—it muddies results, damages sender reputation, and makes every future campaign harder to trust.
-              </p>
-              <p>
-                This tool exists to fix the very first link in the chain. It turns “this is the person I want” into “this is someone
-                I can actually reach.” By removing unreliable inputs, it gives you clean signal: when outreach underperforms, you
-                know why—and when it works, you can repeat it with confidence. No guessing whether the problem was the list, the
-                message, or the channel.
-              </p>
-              <p className="font-semibold text-white">
-                Good outbound isn’t about sending more emails. It’s about making contact—and knowing when you have. That’s what this tool
-                is built to do.
-              </p>
-            </div>
-          </section>
         </main>
 
         <footer className="mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-white/10 pt-4 text-sm text-white/60">
@@ -325,7 +260,7 @@ export default function Home() {
               Get started
             </a>
           </div>
-        </footer>
+      </footer>
       </div>
     </div>
   );
