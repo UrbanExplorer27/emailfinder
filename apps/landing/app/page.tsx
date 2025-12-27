@@ -31,6 +31,111 @@ const plans = [
   { name: "Pro", price: "$49/mo", detail: "1,000 credits + priority API", cta: "Upgrade to Pro", highlight: false },
 ];
 
+const sampleLeads = [
+  { name: "Jordan Blake", company: "Northwind Labs", domain: "northwindlabs.com", email: "jordan.blake@northwindlabs.com" },
+  { name: "Casey Morgan", company: "Acme Ventures", domain: "acmeventures.com", email: "casey@acmeventures.com" },
+  { name: "Taylor Reed", company: "Blue Horizon", domain: "bluehorizon.ai", email: "taylor.reed@bluehorizon.ai" },
+];
+
+function TryItDemo() {
+  const [leadIndex, setLeadIndex] = useState(0);
+  const [status, setStatus] = useState<"idle" | "checking" | "found">("idle");
+  const lead = sampleLeads[leadIndex];
+
+  const onTry = async () => {
+    setStatus("checking");
+    await new Promise((r) => setTimeout(r, 700));
+    setStatus("found");
+  };
+
+  return (
+    <section className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-sky-500/10">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-sky-200">See it in action</p>
+          <h3 className="text-xl font-bold text-white">Try it with sample data</h3>
+          <p className="text-white/75 text-sm">
+            Pick a sample prospect, click “Find email,” and see how result=ok returns a usable email without burning credits on junk.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {sampleLeads.map((item, idx) => (
+            <button
+              key={item.email}
+              onClick={() => {
+                setLeadIndex(idx);
+                setStatus("idle");
+              }}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                idx === leadIndex ? "border-sky-400 bg-white/10 text-white" : "border-white/15 text-white/70 hover:border-white/40"
+              }`}
+            >
+              {item.name.split(" ")[0]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-[1.1fr_0.9fr] items-start">
+        <div className="space-y-3">
+          <div className="grid gap-2 text-sm">
+            <label className="text-white/70">Full name</label>
+            <input
+              value={lead.name}
+              readOnly
+              className="w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-white placeholder:text-white/40"
+            />
+          </div>
+          <div className="grid gap-2 text-sm">
+            <label className="text-white/70">Company domain</label>
+            <input
+              value={lead.domain}
+              readOnly
+              className="w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-white placeholder:text-white/40"
+            />
+          </div>
+          <button
+            onClick={onTry}
+            className="w-full rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/30"
+          >
+            {status === "checking" ? "Checking…" : "Find email"}
+          </button>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 shadow-lg shadow-black/20 text-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-white/60">Result</p>
+              <p className="text-white font-semibold">
+                {status === "found" ? lead.email : status === "checking" ? "Verifying…" : "—"}
+              </p>
+            </div>
+            <span
+              className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                status === "found"
+                  ? "border-emerald-400 text-emerald-300 bg-emerald-400/10"
+                  : status === "checking"
+                    ? "border-sky-300 text-sky-200 bg-sky-300/10"
+                    : "border-white/20 text-white/70"
+              }`}
+            >
+              {status === "found" ? "found (ok)" : status === "checking" ? "checking" : "idle"}
+            </span>
+          </div>
+          <p className="text-white/70">
+            We filter out bad data before it reaches your campaign. Only result=ok counts as “found.”
+          </p>
+          <div className="flex flex-wrap gap-2 text-xs text-white/60">
+            <span className="rounded-full border border-white/15 px-2 py-1">Save to list</span>
+            <span className="rounded-full border border-white/15 px-2 py-1">Export</span>
+            <span className="rounded-full border border-white/15 px-2 py-1">No credits on junk</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0b1221] text-white">
@@ -126,6 +231,8 @@ export default function Home() {
               outreach so you can focus on reaching the people you chose—without paying for results you can’t use.
             </p>
           </section>
+
+          <TryItDemo />
 
           <section id="how-it-works" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
