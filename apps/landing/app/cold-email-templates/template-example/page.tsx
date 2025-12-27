@@ -39,13 +39,16 @@ export default function ColdEmailTemplateExample() {
           </ul>
 
           <h2>Body</h2>
-          <p>Hi {{first_name}},</p>
+          <p>Hi {"{{first_name}}"},</p>
           <p>
-            Following up on my note about {{problem}}. We help {{similar_customer}} cut {{pain}} and have a quick idea for
-            {{company}}.
+            Following up on my note about {"{{problem}}"} . We help {"{{similar_customer}}"} cut {"{{pain}}"} and have a quick
+            idea for {"{{company}}"}.
           </p>
           <p>Open to a 10-minute chat this week?</p>
-          <p>Thanks,<br />{{your_name}}</p>
+          <p>
+            Thanks,<br />
+            {"{{your_name}}"}
+          </p>
 
           <h2>Variations</h2>
           <ul>
