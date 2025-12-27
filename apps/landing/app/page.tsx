@@ -117,19 +117,10 @@ export default function Home() {
           <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/15">
             <h2 className="text-2xl font-bold text-white">Turn prospects into real opportunities.</h2>
             <p className="text-white/80">
-              Because email is still the most effective way to start a business conversation. But most email finder tools
-              create a new problem: bad data. Bad data means more cleanup, more second-guessing, and more time spent fixing
-              lists instead of making contact. This tool removes that friction at the source. It strips out guesswork from
-              your outreach so you can focus on reaching the people you chose—without paying for results you can’t use.
-            </p>
-            <p className="text-white/70">
-              Turn prospects into real opportunities. Email is the most effective outreach channel—but only when the data is
-              clean. Stop wasting time fixing bad lists. Remove guesswork from your campaigns and pay only for emails you can
-              actually use.
-            </p>
-            <p className="text-white/60">
-              Turn prospects into real opportunities. Direct access beats perfect targeting. Remove guesswork from outbound
-              and focus on making contact—not cleaning data.
+              Email is still the most effective way to start a business conversation. But most email finder tools create a
+              new problem: bad data. Bad data means more cleanup, more second-guessing, and more time spent fixing lists
+              instead of making contact. This tool removes that friction at the source. It strips out guesswork from your
+              outreach so you can focus on reaching the people you chose—without paying for results you can’t use.
             </p>
           </section>
 
