@@ -1,101 +1,221 @@
-import Image from "next/image";
+const stats = [
+  { label: "Leads enriched", value: "120k+" },
+  { label: "Avg. match rate", value: "78%" },
+  { label: "Time saved / rep", value: "4h / wk" },
+];
+
+const painPoints = [
+  "Prospecting stalls because emails are missing or bounce.",
+  "Your team wastes time copy/pasting from LinkedIn into spreadsheets.",
+  "Bulk email finders burn credits on junk results.",
+];
+
+const solutions = [
+  "LinkedIn overlay that grabs name + company and returns only verified emails (result = ok).",
+  "Web app + lead lists to save, tag, and export without losing context.",
+  "Mass CSV lookup for paid plans—free trial gets 5 credits to prove it works.",
+];
+
+const steps = [
+  { title: "Open LinkedIn", desc: "Click the extension on any profile; we pull name and company instantly." },
+  { title: "Find & verify", desc: "We call our API, return only result=ok emails, and stop charging on junk." },
+  { title: "Save & act", desc: "Add to a lead list, export, or trigger your outreach. Billing handled by Stripe." },
+];
+
+const plans = [
+  { name: "Free trial", price: "$0", detail: "5 credits to prove it works", cta: "Start free", highlight: false },
+  { name: "Starter", price: "$25/mo", detail: "500 credits + mass lookup", cta: "Upgrade to Starter", highlight: true },
+  { name: "Pro", price: "$49/mo", detail: "1,000 credits + priority API", cta: "Upgrade to Pro", highlight: false },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-[#0b1221] text-white">
+      <div className="absolute inset-0 bg-grid pointer-events-none opacity-60" />
+      <div className="relative mx-auto max-w-6xl px-5 py-10 lg:py-14">
+        <header className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center text-sm font-bold">
+              EF
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Email Finder</p>
+              <p className="text-sm text-white/80">Verified emails from LinkedIn</p>
+            </div>
+          </div>
+          <a
+            href="#pricing"
+            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 hover:border-white/30 hover:bg-white/10 transition"
+          >
+            View plans →
+          </a>
+        </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <main className="mt-10 space-y-14 lg:space-y-16">
+          <section className="grid gap-8 lg:grid-cols-[1.2fr_0.9fr] items-start">
+            <div className="space-y-6">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
+                Built for LinkedIn prospecting
+              </p>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
+                Find verified emails from LinkedIn in seconds. No more junk results.
+              </h1>
+              <p className="text-lg text-white/80">
+                Our extension and web app work together: scrape the profile, verify the email (only result = ok counts),
+                save to a lead list, and export. Free trial gives 5 credits to prove it works.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="#pricing"
+                  className="inline-flex justify-center rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/40"
+                >
+                  Start free — 5 credits
+                </a>
+                <a
+                  href="#how-it-works"
+                  className="inline-flex justify-center rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
+                >
+                  See how it works
+                </a>
+              </div>
+              <div className="grid grid-cols-3 gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-center text-sm">
+                {stats.map((s) => (
+                  <div key={s.label} className="space-y-1">
+                    <p className="text-xl font-bold text-white">{s.value}</p>
+                    <p className="text-white/60">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-4 shadow-xl shadow-sky-500/10">
+              <p className="text-sm font-semibold text-sky-100">Why teams switch</p>
+              <ul className="space-y-3 text-white/85">
+                {painPoints.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-sky-400" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="h-px w-full bg-white/10" />
+              <p className="text-sm font-semibold text-sky-100">How we solve it</p>
+              <ul className="space-y-3 text-white/85">
+                {solutions.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-indigo-400" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section id="how-it-works" className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-sky-200">How it works</p>
+                <h2 className="text-2xl font-bold text-white">From profile to outreach in three steps</h2>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {steps.map((step, i) => (
+                <div
+                  key={step.title}
+                  className="rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/10"
+                >
+                  <div className="flex items-center gap-2 text-sky-200 text-sm font-semibold mb-2">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white">
+                      {i + 1}
+                    </span>
+                    Step {i + 1}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
+                  <p className="text-sm text-white/75 mt-2">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="pricing" className="space-y-6 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-sky-500/10">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Pricing</p>
+                <h2 className="text-2xl font-bold text-white">Start free, upgrade when you’re ready</h2>
+                <p className="text-white/75">
+                  Free trial: 5 credits. Starter: 500 credits. Pro: 1,000 credits. Stripe-powered billing.
+                </p>
+              </div>
+              <a
+                href="#"
+                className="inline-flex justify-center rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/40"
+              >
+                Get started
+              </a>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {plans.map((plan) => (
+                <div
+                  key={plan.name}
+                  className={`rounded-xl border p-4 ${
+                    plan.highlight ? "border-sky-400 bg-white/10 shadow-lg shadow-sky-500/20" : "border-white/10 bg-white/5"
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-sky-100">{plan.name}</p>
+                  <p className="text-2xl font-bold text-white mt-1">{plan.price}</p>
+                  <p className="text-sm text-white/70 mb-3">{plan.detail}</p>
+                  <a
+                    href="#"
+                    className={`inline-flex w-full justify-center rounded-full px-4 py-2 text-sm font-semibold ${
+                      plan.highlight
+                        ? "bg-gradient-to-r from-sky-400 to-indigo-500 text-white shadow-md shadow-sky-500/30"
+                        : "border border-white/20 text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {plan.cta}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
+            <div className="flex flex-col gap-2">
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why it converts</p>
+              <h2 className="text-2xl font-bold text-white">Only verified results count as “found”</h2>
+              <p className="text-white/75">
+                We only mark “found” when the result code is ok. No credits burned on invalid_mx, email_disabled, or
+                redirects. That means cleaner lists and fewer bounces.
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm font-semibold text-sky-100">Extension + web app</p>
+                <p className="text-white/75 mt-2">
+                  Use the Chrome extension on LinkedIn; manage credits, lead lists, mass CSV, and billing in the web app.
+                </p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm font-semibold text-sky-100">Lead lists that stay synced</p>
+                <p className="text-white/75 mt-2">
+                  Save to lists right from the extension or dashboard, export anytime, and keep your team aligned.
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer className="mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-white/10 pt-4 text-sm text-white/60">
+          <p>Built for outbound teams who live on LinkedIn.</p>
+          <div className="flex gap-3">
+            <a className="hover:text-white" href="#pricing">
+              Pricing
+            </a>
+            <a className="hover:text-white" href="#">
+              Get started
+            </a>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
