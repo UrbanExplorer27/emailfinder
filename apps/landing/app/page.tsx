@@ -114,6 +114,58 @@ export default function Home() {
             </div>
           </section>
 
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
+            <div className="flex flex-col gap-2">
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why it converts</p>
+              <h2 className="text-2xl font-bold text-white">Only verified results count as “found”</h2>
+              <p className="text-white/75">
+                We only mark “found” when the result code is ok. No credits burned on invalid_mx, email_disabled, or
+                redirects. That means cleaner lists and fewer bounces.
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm font-semibold text-sky-100">Extension + web app</p>
+                <p className="text-white/75 mt-2">
+                  Use the Chrome extension on LinkedIn; manage credits, lead lists, mass CSV, and billing in the web app.
+                </p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm font-semibold text-sky-100">Lead lists that stay synced</p>
+                <p className="text-white/75 mt-2">
+                  Save to lists right from the extension or dashboard, export anytime, and keep your team aligned.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
+            <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why this matters</p>
+            <h2 className="text-2xl font-bold text-white">You don’t have a lead problem. You have an access problem.</h2>
+            <div className="space-y-3 text-white/80 leading-relaxed">
+              <p>
+                Most outbound campaigns fail before the first message is ever read. Not because the offer is wrong or the
+                copy is weak—but because the person was never truly reachable. A guessed email, a stale address, or a bad list
+                quietly kills the opportunity and leaves you wondering what went wrong.
+              </p>
+              <p>
+                Email remains the highest-converting way to start a real business conversation. It’s private. It allows follow-up.
+                It creates a paper trail you can measure and improve. But only if the address is good. Bad data doesn’t just waste a
+                send—it muddies results, damages sender reputation, and makes every future campaign harder to trust.
+              </p>
+              <p>
+                This tool exists to fix the very first link in the chain. It turns “this is the person I want” into “this is someone
+                I can actually reach.” By removing unreliable inputs, it gives you clean signal: when outreach underperforms, you
+                know why—and when it works, you can repeat it with confidence. No guessing whether the problem was the list, the
+                message, or the channel.
+              </p>
+              <p className="font-semibold text-white">
+                Good outbound isn’t about sending more emails. It’s about making contact—and knowing when you have. That’s what this tool
+                is built to do.
+              </p>
+            </div>
+          </section>
+
           <section id="how-it-works" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
@@ -139,7 +191,6 @@ export default function Home() {
               ))}
             </div>
           </section>
-
           <section className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/15 via-indigo-500/10 to-transparent p-6 shadow-xl shadow-sky-500/20">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Chrome extension</p>
