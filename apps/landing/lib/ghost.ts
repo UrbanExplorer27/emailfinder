@@ -14,11 +14,12 @@ export const ghostApi =
 
 export const fetchPosts = async (tag?: string) => {
   if (!ghostApi) return [];
+  const tagFilter = tag ? `tag:${tag.toLowerCase().replace(/\s+/g, "-")}` : undefined;
   const posts = await ghostApi.posts.browse({
     include: ["tags", "authors"],
     limit: 9,
     order: "published_at DESC",
-    filter: tag ? `tag:${tag}` : undefined,
+    filter: tagFilter,
   });
   return posts;
 };
