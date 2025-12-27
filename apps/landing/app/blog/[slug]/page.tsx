@@ -1,17 +1,16 @@
- "use client";
+"use server";
 
-import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchPostBySlug } from "@/lib/ghost";
 
 export const dynamic = "force-dynamic";
 
-export default function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const postPromise = fetchPostBySlug(slug);
-  const post = use(postPromise);
-  if (!post) {
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await fetchPostBySlug(slug);
+  const isTemplate = (post?.tags || []).some((t: any) => t.name?.toLowerCase() === "cold email template");
+  if (!post || isTemplate) {
     notFound();
   }
   return (
