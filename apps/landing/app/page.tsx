@@ -1,25 +1,25 @@
 const stats = [
-  { label: "Leads enriched", value: "120k+" },
-  { label: "Avg. match rate", value: "78%" },
-  { label: "Time saved / rep", value: "4h / wk" },
+  { label: "120k+ prospects turned into reachable contacts", value: "120k+" },
+  { label: "Consistent access you can plan around", value: "78%" },
+  { label: "Hours reclaimed from cleanup and guesswork", value: "4h / wk" },
 ];
 
 const painPoints = [
-  "Prospecting stalls because emails are missing or bounce.",
-  "Your team wastes time copy/pasting from LinkedIn into spreadsheets.",
-  "Bulk email finders burn credits on junk results.",
+  "A prospect isn’t an opportunity until you can actually reach them.",
+  "Bad data creates cleanup work that steals time from making contact.",
+  "Most email tools introduce uncertainty instead of removing it.",
 ];
 
 const solutions = [
-  "LinkedIn overlay + Chrome extension that grabs name + company and returns only verified emails (result = ok).",
-  "Web app + lead lists and a standalone finder—drop in any name + company and get the email.",
+  "Turn a LinkedIn profile into a reachable opportunity—without guessing.",
+  "Move from “this is the lead” to “this is a real contact” in one step.",
   "Mass CSV lookup for paid plans—free trial gets 5 credits to prove it works.",
 ];
 
 const steps = [
-  { title: "Open LinkedIn", desc: "Click the extension on any profile; we pull name and company instantly." },
-  { title: "Find & verify", desc: "We call our API, return only result=ok emails, and stop charging on junk." },
-  { title: "Save & act", desc: "Add to a lead list, export, or trigger your outreach. Billing handled by Stripe." },
+  { title: "Identify the person you want to reach", desc: "Click the extension on any profile; we pull name and company instantly." },
+  { title: "Remove uncertainty about access", desc: "We call our API, return only result=ok emails, and stop charging on junk." },
+  { title: "Make contact with confidence", desc: "Add to a lead list, export, or trigger your outreach. Billing handled by Stripe." },
 ];
 
 const plans = [
@@ -62,18 +62,18 @@ export default function Home() {
                 <span className="inline-flex items-center gap-1">Works anywhere you have a name + company</span>
               </p>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
-                Find verified emails from LinkedIn—or anywhere—without burning credits.
+                Turn prospects into real opportunities.
               </h1>
               <p className="text-lg text-white/80">
-                Chrome extension for LinkedIn, plus a web finder for any name + company. We only count “found” when the
-                result is ok—no credits wasted on invalid_mx or email_disabled.
+                Get direct access to email—the most effective way to start real conversations. Remove guesswork from outbound
+                by eliminating bad data at the source.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href="#pricing"
                   className="inline-flex justify-center rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/40"
                 >
-                  Start free — 5 credits
+                  Get direct access to real prospects
           </a>
           <a
                   href="#how-it-works"
@@ -92,7 +92,7 @@ export default function Home() {
               </div>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-4 shadow-xl shadow-sky-500/10">
-              <p className="text-sm font-semibold text-sky-100">Why teams switch</p>
+              <p className="text-sm font-semibold text-sky-100">Why outbound breaks—and how to fix it</p>
               <ul className="space-y-3 text-white/85">
                 {painPoints.map((p) => (
                   <li key={p} className="flex gap-2">
@@ -102,7 +102,7 @@ export default function Home() {
                 ))}
               </ul>
               <div className="h-px w-full bg-white/10" />
-              <p className="text-sm font-semibold text-sky-100">How we solve it</p>
+              <p className="text-sm font-semibold text-sky-100">How outbound becomes predictable</p>
               <ul className="space-y-3 text-white/85">
                 {solutions.map((p) => (
                   <li key={p} className="flex gap-2">
@@ -137,7 +137,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-sky-200">How it works</p>
-                <h2 className="text-2xl font-bold text-white">From profile to outreach in three steps</h2>
+                <h2 className="text-2xl font-bold text-white">From prospect to opportunity</h2>
               </div>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
@@ -162,7 +162,7 @@ export default function Home() {
           <section className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/15 via-indigo-500/10 to-transparent p-6 shadow-xl shadow-sky-500/20">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Chrome extension</p>
-              <h3 className="mt-2 text-xl font-bold text-white">LinkedIn overlay</h3>
+              <h3 className="mt-2 text-xl font-bold text-white">Direct access from LinkedIn profiles</h3>
               <p className="text-white/75 mt-2">
                 On any LinkedIn profile, we auto-capture name + company, call our verifier, and only mark “found” when
                 result=ok. Save to a list without leaving the page.
@@ -175,7 +175,7 @@ export default function Home() {
             </div>
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/15 via-cyan-500/10 to-transparent p-6 shadow-xl shadow-emerald-500/20">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Web + API</p>
-              <h3 className="mt-2 text-xl font-bold text-white">Find anyone’s email</h3>
+              <h3 className="mt-2 text-xl font-bold text-white">Turn names into real conversations</h3>
               <p className="text-white/75 mt-2">
                 Type a name + company domain in the web app, or upload a CSV for mass lookup (Starter/Pro). The same
                 verifier and credit rules apply—only ok results are counted.
@@ -233,7 +233,7 @@ export default function Home() {
           <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
             <div className="flex flex-col gap-2">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why it converts</p>
-              <h2 className="text-2xl font-bold text-white">Only verified results count as “found”</h2>
+              <h2 className="text-2xl font-bold text-white">Outbound works when the inputs are reliable</h2>
               <p className="text-white/75">
                 We only mark “found” when the result code is ok. No credits burned on invalid_mx, email_disabled, or
                 redirects. That means cleaner lists and fewer bounces.
@@ -241,13 +241,13 @@ export default function Home() {
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Extension + web app</p>
+                <p className="text-sm font-semibold text-sky-100">Outbound works when the inputs are reliable</p>
                 <p className="text-white/75 mt-2">
                   Use the Chrome extension on LinkedIn; manage credits, lead lists, mass CSV, and billing in the web app.
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Lead lists that stay synced</p>
+                <p className="text-sm font-semibold text-sky-100">Built for teams that want predictable outbound—not guesswork.</p>
                 <p className="text-white/75 mt-2">
                   Save to lists right from the extension or dashboard, export anytime, and keep your team aligned.
                 </p>
@@ -257,7 +257,7 @@ export default function Home() {
         </main>
 
         <footer className="mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-white/10 pt-4 text-sm text-white/60">
-          <p>Built for outbound teams who live on LinkedIn.</p>
+          <p>Built for teams that want predictable outbound—not guesswork.</p>
           <div className="flex gap-3">
             <a className="hover:text-white" href="#pricing">
               Pricing
