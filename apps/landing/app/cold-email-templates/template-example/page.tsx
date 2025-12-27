@@ -34,8 +34,8 @@ export default function ColdEmailTemplateExample() {
 
           <h2>Subject lines</h2>
           <ul>
-            <li>"Quick follow-up for {{company}}"</li>
-            <li>"Idea for {{team}}"</li>
+            <li>"Quick follow-up for {"{{company}}" }"</li>
+            <li>"Idea for {"{{team}}" }"</li>
           </ul>
 
           <h2>Body</h2>
