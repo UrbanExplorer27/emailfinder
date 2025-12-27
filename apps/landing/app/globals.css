@@ -29,4 +29,17 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+details summary {
+  list-style: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+.dropdown-panel {
+  display: none;
+}
+details[open] > .dropdown-panel {
+  display: flex;
+}
 }
