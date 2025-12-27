@@ -11,8 +11,8 @@ const painPoints = [
 ];
 
 const solutions = [
-  "LinkedIn overlay that grabs name + company and returns only verified emails (result = ok).",
-  "Web app + lead lists to save, tag, and export without losing context.",
+  "LinkedIn overlay + Chrome extension that grabs name + company and returns only verified emails (result = ok).",
+  "Web app + lead lists and a standalone finder—drop in any name + company and get the email.",
   "Mass CSV lookup for paid plans—free trial gets 5 credits to prove it works.",
 ];
 
@@ -54,15 +54,19 @@ export default function Home() {
         <main className="mt-10 space-y-14 lg:space-y-16">
           <section className="grid gap-8 lg:grid-cols-[1.2fr_0.9fr] items-start">
             <div className="space-y-6">
-              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
-                Built for LinkedIn prospecting
+              <p className="inline-flex flex-wrap items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-sky-100">
+                <span className="inline-flex items-center gap-1">
+                  Built for LinkedIn & Chrome extension
+                </span>
+                <span className="inline-flex items-center gap-1 text-white/80">•</span>
+                <span className="inline-flex items-center gap-1">Works anywhere you have a name + company</span>
               </p>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
-                Find verified emails from LinkedIn in seconds. No more junk results.
+                Find verified emails from LinkedIn—or anywhere—without burning credits.
               </h1>
               <p className="text-lg text-white/80">
-                Our extension and web app work together: scrape the profile, verify the email (only result = ok counts),
-                save to a lead list, and export. Free trial gives 5 credits to prove it works.
+                Chrome extension for LinkedIn, plus a web finder for any name + company. We only count “found” when the
+                result is ok—no credits wasted on invalid_mx or email_disabled.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
@@ -133,6 +137,35 @@ export default function Home() {
                   <p className="text-sm text-white/75 mt-2">{step.desc}</p>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/15 via-indigo-500/10 to-transparent p-6 shadow-xl shadow-sky-500/20">
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Chrome extension</p>
+              <h3 className="mt-2 text-xl font-bold text-white">LinkedIn overlay</h3>
+              <p className="text-white/75 mt-2">
+                On any LinkedIn profile, we auto-capture name + company, call our verifier, and only mark “found” when
+                result=ok. Save to a list without leaving the page.
+              </p>
+              <ul className="mt-3 space-y-2 text-white/80 text-sm">
+                <li>• One-click lookup on profile</li>
+                <li>• Save to lead lists, export later</li>
+                <li>• No credits burned on invalid results</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/15 via-cyan-500/10 to-transparent p-6 shadow-xl shadow-emerald-500/20">
+              <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Web + API</p>
+              <h3 className="mt-2 text-xl font-bold text-white">Find anyone’s email</h3>
+              <p className="text-white/75 mt-2">
+                Type a name + company domain in the web app, or upload a CSV for mass lookup (Starter/Pro). The same
+                verifier and credit rules apply—only ok results are counted.
+              </p>
+              <ul className="mt-3 space-y-2 text-white/80 text-sm">
+                <li>• Single lookup: name + company domain</li>
+                <li>• Mass CSV lookup for paid plans</li>
+                <li>• Lead lists stay synced with the extension</li>
+              </ul>
             </div>
           </section>
 
