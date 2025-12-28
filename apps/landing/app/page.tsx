@@ -30,9 +30,9 @@ const steps = [
 ];
 
 const plans = [
-  { name: "Free trial", price: "$0", detail: "5 credits to see real results", cta: "Start free", highlight: false },
-  { name: "Starter", price: "$25/mo", detail: "500 credits + mass lookup", cta: "Upgrade to Starter", highlight: true },
-  { name: "Pro", price: "$49/mo", detail: "1,000 credits + priority API", cta: "Upgrade to Pro", highlight: false },
+  { name: "Try it risk-free", price: "$0", detail: "5 real opportunities to prove it works", cta: "Test with real prospects", highlight: false },
+  { name: "Starter", price: "$25/mo", detail: "500 usable contacts—no wasted credits", cta: "Scale predictable outreach", highlight: true },
+  { name: "Pro", price: "$49/mo", detail: "1,000 contacts for teams that run outbound daily", cta: "Run outbound with confidence", highlight: false },
 ];
 
 const sampleLeads = [
@@ -347,6 +347,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <p className="text-white/65 text-sm">
+              No cleanup. No second-guessing. You only pay for results you can actually use.
+            </p>
           </section>
 
           <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
