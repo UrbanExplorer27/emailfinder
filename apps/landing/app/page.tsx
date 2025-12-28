@@ -355,24 +355,26 @@ export default function Home() {
           <section className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
             <div className="flex flex-col gap-2">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-200">Why it converts</p>
-              <h2 className="text-2xl font-bold text-white">Outbound works when the inputs are reliable</h2>
+              <h2 className="text-2xl font-bold text-white">Only usable data counts.</h2>
               <p className="text-white/75">
-                We only mark “found” when the result code is ok. No credits burned on invalid_mx, email_disabled, or
-                redirects. That means cleaner lists and fewer bounces.
+                Most email finders charge you before you know if the data is usable. We don’t.
               </p>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Outbound works when the inputs are reliable</p>
+                <p className="text-sm font-semibold text-sky-100">How it works</p>
                 <p className="text-white/75 mt-2">
-                  Use the Chrome extension on LinkedIn; manage credits, lead lists, mass CSV, and billing in the web app.
+                  An email only counts when it’s usable. If it’s invalid, disabled, or redirected, it doesn’t cost you anything.
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm font-semibold text-sky-100">Built for teams that want predictable outbound—not guesswork.</p>
-                <p className="text-white/75 mt-2">
-                  Save to lists right from the extension or dashboard, export anytime, and keep your team aligned.
-                </p>
+                <p className="text-sm font-semibold text-sky-100">What that means for you</p>
+                <ul className="mt-2 space-y-1 text-white/80 text-sm">
+                  <li>• Cleaner lists</li>
+                  <li>• Fewer bounces</li>
+                  <li>• Clear signal when campaigns underperform</li>
+                  <li>• No second-guessing your inputs</li>
+                </ul>
               </div>
             </div>
           </section>
