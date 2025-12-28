@@ -317,7 +317,7 @@ export default function Home() {
                 <p className="text-white/75">Only usable results count. No charges for junk data.</p>
               </div>
               <a
-                href="#"
+                href="https://emailfinderproj.vercel.app/signin"
                 className="inline-flex justify-center rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-500/40"
               >
                 Get started
