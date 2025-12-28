@@ -29,3 +29,6 @@ Monorepo for an email finder SaaS (hunter.io style). The frontend ships first; b
 - Add shared validation/types in `packages` for request/response contracts.
 - Wire Clerk auth + Stripe billing flows on the web app once backend routes are ready.
 
+
+
+

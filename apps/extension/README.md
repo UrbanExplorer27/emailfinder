@@ -7,3 +7,6 @@ This workspace is reserved for the Chrome extension. Planned behavior:
 
 Current status: scaffold only. Add your preferred tooling (Vite/webpack) and build script here.
 
+
+
+

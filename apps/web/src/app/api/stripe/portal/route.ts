@@ -17,7 +17,8 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing STRIPE_SECRET_KEY" }, { status: 500 });
   }
 
-  const stripe = new Stripe(stripeSecret, { apiVersion: "2024-11-20.acacia" });
+  // Use the pinned, supported Stripe API version that matches our typings.
+  const stripe = new Stripe(stripeSecret, { apiVersion: "2023-10-16" });
 
   const user = await prisma.user.findUnique({ where: { clerkUserId: userId } });
   if (!user || !user.stripeCustomerId) {
@@ -33,4 +34,5 @@ export async function GET(req: Request) {
 
   return NextResponse.redirect(portalSession.url, { status: 303 });
 }
+
 

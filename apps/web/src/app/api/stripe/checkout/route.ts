@@ -34,7 +34,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unsupported plan" }, { status: 400 });
   }
 
-  const stripe = new Stripe(stripeSecret, { apiVersion: "2024-11-20.acacia" });
+  // Use the pinned, supported Stripe API version that matches our typings.
+  const stripe = new Stripe(stripeSecret, { apiVersion: "2023-10-16" });
 
   const user = await prisma.user.findUnique({ where: { clerkUserId: userId } });
   if (!user) {
@@ -67,4 +68,5 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ url: session.url });
 }
+
 
