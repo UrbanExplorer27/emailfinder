@@ -335,7 +335,7 @@ export default function Home() {
                   <p className="text-2xl font-bold text-white mt-1">{plan.price}</p>
                   <p className="text-sm text-white/70 mb-3">{plan.detail}</p>
                   <a
-                    href="#"
+                    href="https://emailfinderproj.vercel.app/signin"
                     className={`inline-flex w-full justify-center rounded-full px-4 py-2 text-sm font-semibold ${
                       plan.highlight
                         ? "bg-gradient-to-r from-sky-400 to-indigo-500 text-white shadow-md shadow-sky-500/30"
