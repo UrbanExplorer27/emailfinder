@@ -133,6 +133,16 @@
   cursor: not-allowed;
 }
 
+.ghostButton {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .banner {
   background: #fff4e6;
   border: 1px solid #f59e0b;

@@ -87,6 +87,24 @@ export default function MassLookupPage() {
     URL.revokeObjectURL(url);
   };
 
+  const downloadSampleCsv = () => {
+    const sample = [
+      "firstName,lastName,domain",
+      "Ada,Lovelace,analyticalengine.com",
+      "Grace,Hopper,navy.mil",
+      "Alan,Turing,turing.org",
+      "Katherine,Johnson,nasa.gov",
+      "Margaret,Hamilton,apollo.dev",
+    ].join("\n");
+    const blob = new Blob([sample], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sample-mass-lookup.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -130,6 +148,9 @@ export default function MassLookupPage() {
               />
               Choose file
             </label>
+            <button type="button" className={styles.ghostButton} onClick={downloadSampleCsv}>
+              Download sample CSV
+            </button>
           </div>
           {!isAllowed ? (
             <div className={styles.banner}>
