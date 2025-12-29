@@ -5,6 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import styles from "./mass-lookup.module.css";
 
 type ParsedRow = { firstName: string; lastName: string; domain: string };
+type ResultRow = ParsedRow & {
+  email: string | null;
+  status: string;
+  score?: number | null;
+  result?: string | null;
+  error?: string;
+};
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +22,9 @@ export default function MassLookupPage() {
 
   const [rows, setRows] = useState<ParsedRow[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [results, setResults] = useState<ResultRow[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processError, setProcessError] = useState<string | null>(null);
 
   const isAllowed = useMemo(() => {
     if (!plan) return false;
@@ -44,6 +54,8 @@ export default function MassLookupPage() {
   const handleUpload = (file: File | null) => {
     if (!file) return;
     setUploadError(null);
+    setProcessError(null);
+    setResults([]);
     const reader = new FileReader();
     reader.onload = () => {
       try {
@@ -73,10 +85,11 @@ export default function MassLookupPage() {
   };
 
   const downloadCsv = () => {
-    if (!rows.length) return;
-    const header = "firstName,lastName,domain,email";
-    const body = rows
-      .map((r) => `${r.firstName},${r.lastName},${r.domain},example@${r.domain}`)
+    const source = results.length ? results : rows.map((r) => ({ ...r, email: `example@${r.domain}` }));
+    if (!source.length) return;
+    const header = "firstName,lastName,domain,email,status,confidence";
+    const body = source
+      .map((r) => `${r.firstName},${r.lastName},${r.domain},${r.email ?? ""},${(r as any).status ?? ""},${(r as any).score ?? ""}`)
       .join("\n");
     const blob = new Blob([header + "\n" + body], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -103,6 +116,38 @@ export default function MassLookupPage() {
     a.download = "sample-mass-lookup.csv";
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const runLookups = async () => {
+    if (!rows.length) {
+      setProcessError("Upload a CSV first.");
+      return;
+    }
+    if (!isAllowed) {
+      setProcessError("Mass lookup is available on Starter and Pro.");
+      return;
+    }
+    setIsProcessing(true);
+    setProcessError(null);
+    try {
+      const res = await fetch("/api/mass-lookup/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to process (${res.status}): ${text.slice(0, 200)}`);
+      }
+      const data = await res.json();
+      setResults((data.results ?? []) as ResultRow[]);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to process lookups";
+      setProcessError(message);
+      setResults([]);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -157,6 +202,7 @@ export default function MassLookupPage() {
               Mass lookup is available on Starter and Pro. Upgrade to add more credits and unlock bulk uploads.
             </div>
           ) : null}
+          {processError ? <p className={styles.error}>{processError}</p> : null}
           {uploadError ? <p className={styles.error}>{uploadError}</p> : null}
           {rows.length > 0 ? (
             <div className={styles.results}>
@@ -165,23 +211,35 @@ export default function MassLookupPage() {
                   <p className={styles.label}>Preview ({rows.length} rows)</p>
                   <p className={styles.helper}>Showing first {Math.min(rows.length, 50)} rows from your file.</p>
                 </div>
-                <button className={styles.primaryCta} type="button" onClick={downloadCsv}>
-                  Export CSV
-                </button>
+                <div className={styles.actions}>
+                  <button
+                    className={styles.primaryCta}
+                    type="button"
+                    onClick={runLookups}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? "Running…" : "Run lookups"}
+                  </button>
+                  <button className={styles.ghostButton} type="button" onClick={downloadCsv}>
+                    Export CSV
+                  </button>
+                </div>
               </div>
               <div className={styles.table}>
                 <div className={styles.tableHead}>
                   <span>First name</span>
                   <span>Last name</span>
                   <span>Domain</span>
-                  <span>Result (mock)</span>
+                  <span>Result</span>
                 </div>
-                {rows.map((r, idx) => (
+                {(results.length ? results : rows).map((r, idx) => (
                   <div key={`${r.domain}-${idx}`} className={styles.tableRow}>
                     <span>{r.firstName}</span>
                     <span>{r.lastName}</span>
                     <span>{r.domain}</span>
-                    <span>example@{r.domain}</span>
+                    <span>
+                      {"email" in r && r.email ? r.email : results.length ? "Not found" : `example@${r.domain}`}
+                    </span>
                   </div>
                 ))}
               </div>
