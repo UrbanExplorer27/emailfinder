@@ -261,7 +261,7 @@ export default function MassLookupPage() {
                       <span>{r.firstName}</span>
                       <span>{r.lastName}</span>
                       <span>{r.domain}</span>
-                      <span>{isResult ? (r.email ? r.email : "Not found") : `example@${r.domain}`}</span>
+                      <span>{isResult ? (r.email ? r.email : "Not found") : ""}</span>
                       {results.length ? <span>{(r as any).status ?? ""}</span> : null}
                       {results.length ? <span>{(r as any).score ?? ""}</span> : null}
                     </div>
