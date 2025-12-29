@@ -7,7 +7,7 @@ import styles from "./mass-lookup.module.css";
 type ParsedRow = { firstName: string; lastName: string; domain: string };
 type ResultRow = ParsedRow & {
   email: string | null;
-  status: string;
+  status?: string;
   score?: number | null;
   result?: string | null;
   error?: string;
@@ -28,6 +28,10 @@ export default function MassLookupPage() {
   const [summary, setSummary] = useState<{ processed: number; debited: number; remainingCredits: number } | null>(
     null
   );
+  const [leadLists, setLeadLists] = useState<{ id: string; name: string }[]>([]);
+  const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const isAllowed = useMemo(() => {
     if (!plan) return false;
@@ -52,6 +56,24 @@ export default function MassLookupPage() {
       }
     };
     void loadPlan();
+  }, []);
+
+  useEffect(() => {
+    const loadLists = async () => {
+      try {
+        const res = await fetch("/api/lead-lists", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        const lists = (data.lists ?? []).map((l: any) => ({ id: l.id, name: l.name }));
+        setLeadLists(lists);
+        if (lists.length > 0) {
+          setSelectedListId((prev) => prev ?? lists[0].id);
+        }
+      } catch {
+        // ignore list load errors
+      }
+    };
+    void loadLists();
   }, []);
 
   const handleUpload = (file: File | null) => {
@@ -98,12 +120,10 @@ export default function MassLookupPage() {
   };
 
   const downloadCsv = () => {
-    const source = results.length ? results : rows.map((r) => ({ ...r, email: `example@${r.domain}` }));
+    const source = results.length ? results : rows.map((r) => ({ ...r, email: "" }));
     if (!source.length) return;
-    const header = "firstName,lastName,domain,email,status,confidence";
-    const body = source
-      .map((r) => `${r.firstName},${r.lastName},${r.domain},${r.email ?? ""},${(r as any).status ?? ""},${(r as any).score ?? ""}`)
-      .join("\n");
+    const header = "firstName,lastName,domain,email";
+    const body = source.map((r) => `${r.firstName},${r.lastName},${r.domain},${r.email ?? ""}`).join("\n");
     const blob = new Blob([header + "\n" + body], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -168,6 +188,43 @@ export default function MassLookupPage() {
       setResults([]);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const saveFoundToLeadList = async () => {
+    if (!results.length) {
+      setSaveStatus("Run lookups first to save results.");
+      return;
+    }
+    if (!selectedListId) {
+      setSaveStatus("Select a lead list first.");
+      return;
+    }
+    const found = results.filter((r) => r.email);
+    if (!found.length) {
+      setSaveStatus("No found emails to save.");
+      return;
+    }
+    setIsSaving(true);
+    setSaveStatus(null);
+    try {
+      for (const r of found) {
+        await fetch(`/api/lead-lists/${selectedListId}/items`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: `${r.firstName} ${r.lastName}`.trim(),
+            email: r.email,
+            domain: r.domain,
+          }),
+        });
+      }
+      setSaveStatus(`Saved ${found.length} emails to lead list.`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save to lead list";
+      setSaveStatus(message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -246,14 +303,39 @@ export default function MassLookupPage() {
                   </button>
                 </div>
               </div>
+              {results.length ? (
+                <div className={styles.actions}>
+                  <label className={styles.leadListSelect}>
+                    <span>Select lead list</span>
+                    <select
+                      value={selectedListId ?? ""}
+                      onChange={(e) => setSelectedListId(e.target.value || null)}
+                    >
+                      {leadLists.map((l) => (
+                        <option key={l.id} value={l.id}>
+                          {l.name}
+                        </option>
+                      ))}
+                      {leadLists.length === 0 ? <option value="">No lead lists</option> : null}
+                    </select>
+                  </label>
+                  <button
+                    className={styles.primaryCta}
+                    type="button"
+                    onClick={saveFoundToLeadList}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? "Saving…" : "Save found emails"}
+                  </button>
+                  {saveStatus ? <p className={styles.helper}>{saveStatus}</p> : null}
+                </div>
+              ) : null}
               <div className={styles.table}>
                 <div className={styles.tableHead}>
                   <span>First name</span>
                   <span>Last name</span>
                   <span>Domain</span>
                   <span>Result</span>
-                  {results.length ? <span>Status</span> : null}
-                  {results.length ? <span>Confidence</span> : null}
                 </div>
                 {(results.length ? results : rows).map((r, idx) => {
                   const isResult = "email" in r;
@@ -262,9 +344,7 @@ export default function MassLookupPage() {
                       <span>{r.firstName}</span>
                       <span>{r.lastName}</span>
                       <span>{r.domain}</span>
-                      <span>{isResult ? (r.email ? r.email : "Not found") : ""}</span>
-                      {results.length ? <span>{(r as any).status ?? ""}</span> : null}
-                      {results.length ? <span>{(r as any).score ?? ""}</span> : null}
+                      <span>{isResult ? (r.email ? r.email : "No result found") : ""}</span>
                     </div>
                   );
                 })}
