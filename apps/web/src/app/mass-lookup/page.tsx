@@ -25,6 +25,9 @@ export default function MassLookupPage() {
   const [results, setResults] = useState<ResultRow[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processError, setProcessError] = useState<string | null>(null);
+  const [summary, setSummary] = useState<{ processed: number; debited: number; remainingCredits: number } | null>(
+    null
+  );
 
   const isAllowed = useMemo(() => {
     if (!plan) return false;
@@ -65,9 +68,18 @@ export default function MassLookupPage() {
           .map((l) => l.trim())
           .filter(Boolean);
         const parsed: ParsedRow[] = [];
+        const looksLikeHeader = (cols: string[]) => {
+          const hdr = cols.map((c) => c.toLowerCase());
+          return (
+            hdr[0]?.includes("first") &&
+            hdr[1]?.includes("last") &&
+            (hdr[2]?.includes("domain") || hdr[2]?.includes("company"))
+          );
+        };
         for (let i = 0; i < lines.length; i++) {
           const cols = lines[i].split(",").map((c) => c.trim());
           if (cols.length < 3) continue;
+          if (i === 0 && looksLikeHeader(cols)) continue; // skip header row
           parsed.push({ firstName: cols[0], lastName: cols[1], domain: cols[2] });
           if (parsed.length >= 50) break; // simple cap for preview
         }
@@ -129,6 +141,7 @@ export default function MassLookupPage() {
     }
     setIsProcessing(true);
     setProcessError(null);
+    setSummary(null);
     try {
       const res = await fetch("/api/mass-lookup/process", {
         method: "POST",
@@ -141,6 +154,13 @@ export default function MassLookupPage() {
       }
       const data = await res.json();
       setResults((data.results ?? []) as ResultRow[]);
+      if (typeof data.processed === "number" && typeof data.debited === "number") {
+        setSummary({
+          processed: data.processed,
+          debited: data.debited,
+          remainingCredits: data.remainingCredits ?? 0,
+        });
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to process lookups";
       setProcessError(message);
@@ -231,18 +251,28 @@ export default function MassLookupPage() {
                   <span>Last name</span>
                   <span>Domain</span>
                   <span>Result</span>
+                  {results.length ? <span>Status</span> : null}
+                  {results.length ? <span>Confidence</span> : null}
                 </div>
-                {(results.length ? results : rows).map((r, idx) => (
-                  <div key={`${r.domain}-${idx}`} className={styles.tableRow}>
-                    <span>{r.firstName}</span>
-                    <span>{r.lastName}</span>
-                    <span>{r.domain}</span>
-                    <span>
-                      {"email" in r && r.email ? r.email : results.length ? "Not found" : `example@${r.domain}`}
-                    </span>
-                  </div>
-                ))}
+                {(results.length ? results : rows).map((r, idx) => {
+                  const isResult = "email" in r;
+                  return (
+                    <div key={`${r.domain}-${idx}`} className={styles.tableRow}>
+                      <span>{r.firstName}</span>
+                      <span>{r.lastName}</span>
+                      <span>{r.domain}</span>
+                      <span>{isResult ? (r.email ? r.email : "Not found") : `example@${r.domain}`}</span>
+                      {results.length ? <span>{(r as any).status ?? ""}</span> : null}
+                      {results.length ? <span>{(r as any).score ?? ""}</span> : null}
+                    </div>
+                  );
+                })}
               </div>
+              {summary ? (
+                <p className={styles.helper}>
+                  Processed {summary.processed} rows, debited {summary.debited} credits, remaining {summary.remainingCredits}.
+                </p>
+              ) : null}
             </div>
           ) : null}
         </section>
