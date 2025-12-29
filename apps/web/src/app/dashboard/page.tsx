@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useUser, UserButton } from "@clerk/nextjs";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./dashboard.module.css";
 import { ActivityRow } from "./ActivityRow";
 import { FindEmailForm } from "../find-email/FindEmailForm";
@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic";
 export default function DashboardPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [credits, setCredits] = useState<number | null>(null);
   const [plan, setPlan] = useState<string | null>(null);
   const [isCreditsLoading, setIsCreditsLoading] = useState(false);
@@ -56,6 +57,28 @@ export default function DashboardPage() {
   useEffect(() => {
     void loadCredits();
   }, [loadCredits]);
+
+  // After checkout success, sync plan/credits using the session_id returned by Stripe.
+  useEffect(() => {
+    const maybeSync = async () => {
+      if (!isSignedIn) return;
+      const checkoutStatus = searchParams.get("checkout");
+      const sessionId = searchParams.get("session_id");
+      if (checkoutStatus !== "success" || !sessionId) return;
+      try {
+        await fetch("/api/stripe/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        });
+      } catch {
+        // ignore sync errors; credits will remain unchanged
+      } finally {
+        await loadCredits();
+      }
+    };
+    void maybeSync();
+  }, [isSignedIn, loadCredits, searchParams]);
 
   useEffect(() => {
     const loadActivity = async () => {
