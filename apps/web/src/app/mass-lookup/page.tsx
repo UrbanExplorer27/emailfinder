@@ -76,10 +76,11 @@ export default function MassLookupPage() {
             (hdr[2]?.includes("domain") || hdr[2]?.includes("company"))
           );
         };
-        for (let i = 0; i < lines.length; i++) {
+        // Always treat the first row as a header; skip it from processing/preview.
+        for (let i = 1; i < lines.length; i++) {
           const cols = lines[i].split(",").map((c) => c.trim());
           if (cols.length < 3) continue;
-          if (i === 0 && looksLikeHeader(cols)) continue; // skip header row
+          if (i === 1 && looksLikeHeader(cols)) continue; // redundant safety
           parsed.push({ firstName: cols[0], lastName: cols[1], domain: cols[2] });
           if (parsed.length >= 50) break; // simple cap for preview
         }
