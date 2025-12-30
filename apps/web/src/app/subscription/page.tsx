@@ -74,7 +74,7 @@ export default function SubscriptionPage() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
         <Link href="/dashboard" className={styles.backLink}>
           Back to dashboard

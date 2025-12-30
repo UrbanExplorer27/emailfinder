@@ -45,7 +45,7 @@ export default function LeadListDetailPage({ params }: PageProps) {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
         <Link href="/lead-lists" className={styles.backLink}>
           Back to lead lists

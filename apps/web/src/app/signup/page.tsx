@@ -3,7 +3,7 @@ import { SignUp } from "@clerk/nextjs";
 import styles from "./signup.module.css";
 
 export const metadata: Metadata = {
-  title: "Sign up | Email Finder",
+  title: "Sign up | Nova Email Finder",
   description:
     "Create your account to find verified professional emails by name and domain.",
 };
@@ -14,7 +14,7 @@ export default function SignupPage() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
       </header>
 

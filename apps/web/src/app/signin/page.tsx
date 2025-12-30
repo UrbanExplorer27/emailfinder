@@ -3,9 +3,9 @@ import { SignIn } from "@clerk/nextjs";
 import styles from "./signin.module.css";
 
 export const metadata: Metadata = {
-  title: "Sign in | Email Finder",
+  title: "Sign in | Nova Email Finder",
   description:
-    "Access your Email Finder account to search and verify professional emails.",
+    "Access your Nova Email Finder account to search and verify professional emails.",
 };
 
 export default function SigninPage() {
@@ -14,7 +14,7 @@ export default function SigninPage() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
       </header>
 

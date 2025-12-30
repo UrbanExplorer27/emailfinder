@@ -4,7 +4,7 @@ import styles from "./find-email.module.css";
 import { FindEmailForm } from "./FindEmailForm";
 
 export const metadata: Metadata = {
-  title: "Find an Email | Email Finder",
+  title: "Find an Email | Nova Email Finder",
   description: "Look up a professional email by name and domain.",
 };
 
@@ -16,7 +16,7 @@ export default function FindEmailPage() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
         <Link href="/dashboard" className={styles.backLink}>
           Back to dashboard

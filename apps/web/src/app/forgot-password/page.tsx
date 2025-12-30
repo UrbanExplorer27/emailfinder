@@ -3,8 +3,8 @@ import Link from "next/link";
 import styles from "./forgot-password.module.css";
 
 export const metadata: Metadata = {
-  title: "Forgot password | Email Finder",
-  description: "Reset your Email Finder password.",
+  title: "Forgot password | Nova Email Finder",
+  description: "Reset your Nova Email Finder password.",
 };
 
 export default function ForgotPasswordPage() {
@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.dot} />
-          <span className={styles.logoText}>Email Finder</span>
+          <span className={styles.logoText}>Nova Email Finder</span>
         </div>
         <Link href="/signin" className={styles.backLink}>
           Back to sign in
@@ -55,6 +55,7 @@ export default function ForgotPasswordPage() {
     </div>
   );
 }
+
 
 
 
