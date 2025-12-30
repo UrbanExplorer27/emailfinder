@@ -18,3 +18,17 @@ yarn dev
 ### Deploy
 - Sandbox/preview: push to `sandbox` (uses Neon `sandbox` branch).
 - Production: promote `main` with the Neon `main` branch connection.
+
+### Environment matrix
+- **Sandbox / Preview / Local dev**
+  - DB: Neon branch `sandbox`
+  - Stripe: Test keys (`sk_test`, `pk_test`, test price IDs)
+  - Email finder: Production key (OK to use)
+  - Clerk: Preview/dev keys
+  - Vercel: Preview environment; pull envs locally with `vercel env pull --environment preview`
+- **Production**
+  - DB: Neon branch `main`
+  - Stripe: Live keys (`sk_live`, live price IDs)
+  - Email finder: Production key
+  - Clerk: Production keys
+  - Vercel: Production environment
